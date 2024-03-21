@@ -6,6 +6,7 @@ const errorCode = {
     NOT_REGISTED_USER: "e005",
     NOT_PERMISSION: "e006",
     NOT_VALID_TOKEN: "e007",
+    DOCUMENT_NOT_FOUND: "e008",
 };
 
 const errorMessage = {
@@ -16,6 +17,7 @@ const errorMessage = {
     NOT_REGISTED_USER: "You are not registered",
     NOT_PERMISSION: "You are not able to access this resource",
     NOT_VALID_TOKEN: "This token is invalid",
+    DOCUMENT_NOT_FOUND: "This document is not found",
 };
 
 module.exports = { errorCode, errorMessage};

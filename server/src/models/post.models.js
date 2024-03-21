@@ -18,39 +18,39 @@ const postSchema = new Schema({
         required: true
     },
     roomArea: {
-        type: int,
+        type: Number,
         required: true
     },
     roomType: { //0 for closed, 1 for not closed
-        type: int,
+        type: Number,
         required: true
     },
     roomPrice: {
-        type: int,
+        type: Number,
         required: true
     },
     roomPriceElectricity: {
-        type: int,
+        type: Number,
         required: true
     },
     roomPriceWater: {
-        type: int,
+        type: Number,
         required: true
     },
     roomPriceInternet: {
-        type: int,
+        type: Number,
         required: true
     },
     roomPriceCleaning: {
-        type: int,
+        type: Number,
         required: true
     },
     hasAirConditional: {
-        type: bool,
+        type: Boolean,
         required: true
     },
     hasHeater: {
-        type: bool,
+        type: Boolean,
         required: true
     },
     image: {

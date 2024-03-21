@@ -1,14 +1,18 @@
 const { User } = require('../models/user.models');
+const { Post } = require('../models/post.models');
 
 const getUser = async (req, res) => {
     try {
         const phoneNumber = req.phoneNumber;
         const user = await User.findOne({phoneNumber: phoneNumber});
-        return res.status(200).send(user);
+        return res.status(200).json({
+            message: "Get user successfully",
+            data: user
+        });
     } catch (error) {
-        return res.status(500).send({
-            errorCode: errorCode.INTERNAL_SERVER_ERROR,
-            message: error
+        return res.status(500).json({
+            message: error,
+            errorCode: errorCode.INTERNAL_SERVER_ERROR
         });
     }
 }
@@ -21,11 +25,16 @@ const getUser = async (req, res) => {
  */
 const getUserPosts = async (req, res) => {
     try {
-        res.send("Get user posts");
+        const phoneNumber = req.phoneNumber;
+        const posts = await Post.find({phoneNumber: phoneNumber});
+        return res.status(201).send({
+            message: "Get user's posts successfully",
+            data: posts
+        });
     } catch (error) {
-        return res.status(500).send({
+        return res.status(500).json({
+            message: error,
             errorCode: errorCode.INTERNAL_SERVER_ERROR,
-            message: error
         });
     }
 }

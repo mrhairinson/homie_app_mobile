@@ -11,7 +11,10 @@ const baseUrl = process.env.BASE_URL;
 const mongodbUri = process.env.MONGODB_URI;
 
 //Enabled CORS policies
-app.use(cors());
+app.use(cors({
+  origin: ['exp://192.168.1.7:8081'],
+  methods: ['GET', 'POST'],
+}));
 //Enable express JSON middleware
 app.use(express.json());
 //Use routes

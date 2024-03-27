@@ -11,7 +11,6 @@ const Post = (props) => {
   const post = props.post;
   const [showDetail, setShowDetail] = useState(false);
   const images = [];
-
   return (
     <View style={styles.container}>
       {/* Image  */}
@@ -47,11 +46,13 @@ const Post = (props) => {
 
       {/* Contact */}
       <View style={styles.contact}>
-        {isLoggedIn ?? (
+        {isLoggedIn ? (
           <Button
             title="Nhắn tin"
             onPress={() => console.log("Go to message")}
           />
+        ) : (
+          <></>
         )}
         <Button
           title={`Gọi ${[post.phoneNumber]}`}

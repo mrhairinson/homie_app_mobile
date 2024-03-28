@@ -1,26 +1,21 @@
-import { View, StyleSheet, ScrollView, FlatList } from "react-native";
+import { View, StyleSheet, FlatList } from "react-native";
 import { StatusBar } from "react-native";
 import React, { useEffect, useState } from "react";
 import Post from "../components/Post";
-import axios from "axios";
-
-// const baseUrl = "http://localhost:8080/api/v1";
+import { getAllPost } from "../apis";
 
 const Search = () => {
   const [posts, setPosts] = useState(null);
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchPost = async () => {
       try {
-        const response = await axios.get(
-          `http://192.168.1.7:8080/api/v1/post/`
-        );
-        console.log(response.data.data);
-        setPosts(response.data.data);
+        const result = await getAllPost();
+        setPosts(result);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-    fetchData();
+    fetchPost();
   }, []);
   return (
     <View style={styles.container}>

@@ -1,4 +1,5 @@
 const errorCode = {
+    SUCCESS: "e000",
     INTERNAL_SERVER_ERROR: "e001",
     DUPLICATE_USER: "e002",
     EXPIRED_OTP: "e003",

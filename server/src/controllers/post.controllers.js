@@ -10,7 +10,6 @@ const { errorCode, errorMessage } = require('../resources/index');
 const getAllPosts = async (req, res) => {
     try {
         const posts = await Post.find();
-        console.log("Get post success")
         return res.status(200).send({
             message: "Get posts successfully",
             count: posts.length,

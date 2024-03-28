@@ -19,7 +19,7 @@ const signup = async(req, res) => {
         });
         if (user) {
             //Check if user is already existing
-            return res.status(400).send({
+            return res.status(400).json({
                 errorCode: errorCode.DUPLICATE_USER,
                 message: errorMessage.DUPLICATE_USER
             });
@@ -39,12 +39,13 @@ const signup = async(req, res) => {
         // sendOTP(otp.phoneNumber, otp.otpNumber);
         console.log("Sending OTP...");
         console.log("OTP sended!");
-        return res.status(201).send({
+        return res.status(201).json({
             otp: otp.otpNumber,
-            message: "OTP sended!"
+            message: "OTP sended!",
+            errorCode: errorCode.SUCCESS,
         });
     } catch (error) {
-        return res.status(500).send({
+        return res.status(500).json({
             errorCode: errorCode.INTERNAL_SERVER_ERROR,
             message: error
         });
@@ -69,20 +70,20 @@ const verify = async(req, res) => {
         });
         if (user) {
             //Check if user is already existing
-            return res.status(400).send({
+            return res.status(400).json({
                 errorCode: errorCode.DUPLICATE_USER,
                 message: errorMessage.DUPLICATE_USER
             });
         }
         if (!otpHolder) {
             //Check if otp expired
-            return res.status(400).send({
+            return res.status(400).json({
                 errorCode: errorCode.EXPIRED_OTP,
                 message: errorMessage.EXPIRED_OTP
             });
         }
         if (requestOtp !== otpHolder.otpNumber) {
-            return res.status(400).send({
+            return res.status(400).json({
                 errorCode: errorCode.WRONG_OTP,
                 message: errorMessage.WRONG_OTP
             });
@@ -90,11 +91,12 @@ const verify = async(req, res) => {
         //Save user if they provide valid otp number
         const newUser = new User({phoneNumber: phoneNumber, name: phoneNumber, dob: ""});
         const result = await newUser.save();
-        return res.status(201).send({
-            message: "User registed successfully!"
+        return res.status(201).json({
+            errorCode: errorCode.SUCCESS,
+            message: "User registed successfully!",
         });
     } catch (error) {
-        return res.status(500).send({
+        return res.status(500).json({
             errorCode: errorCode.INTERNAL_SERVER_ERROR,
             message: error.message
         });
@@ -102,29 +104,39 @@ const verify = async(req, res) => {
 }
 
 const signin = async(req, res) => {
-    const { phoneNumber } = req.body;
-    const user = await User.findOne({
-        phoneNumber: phoneNumber
-    });
-    if (!user) {
-        // Case user is not registered
-        return res.status(400).send({
-            errorCode: errorCode.NOT_REGISTED_USER,
-            message: errorMessage.NOT_REGISTED_USER
+    try {
+        const { phoneNumber } = req.body;
+        const user = await User.findOne({
+            phoneNumber: phoneNumber
+        });
+        if (!user) {
+            // Case user is not registered
+            return res.status(400).json({
+                errorCode: errorCode.NOT_REGISTED_USER,
+                message: errorMessage.NOT_REGISTED_USER
+            });
+        }
+        //Create JWT
+        const jwtToken = generateJwt(phoneNumber);
+        console.log(jwtToken);
+        return res.status(200).json({
+            jwtToken: jwtToken,
+            user: user,
+            message: "Sign in successfully!",
+            errorCode: errorCode.SUCCESS,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            errorCode: errorCode.INTERNAL_SERVER_ERROR,
+            message: error.message
         });
     }
-    //Create JWT
-    const jwtToken = generateJwt(phoneNumber);
-    console.log(jwtToken);
-    return res.status(200).send({
-        jwtToken: jwtToken,
-        message: "Sign in successfully!"
-    });
 }
 
 const signout = async(req, res) => {
-    return res.status(200).send({
-        message: "Logout successfully!"
+    return res.status(200).json({
+        message: "Logout successfully!",
+        errorCode: errorCode.SUCCESS,
     });
 }
 

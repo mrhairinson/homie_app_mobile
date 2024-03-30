@@ -6,9 +6,8 @@ import { Ionicons, MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 import { useAuth } from "../contexts/AuthProvider";
 import { formatMoneyToVND } from "../utils";
 
-const Post = (props) => {
+const Post = ({ post, navigateMap }) => {
   const { isLoggedIn } = useAuth();
-  const post = props.post;
   const [showDetail, setShowDetail] = useState(false);
   const images = [];
   return (
@@ -34,7 +33,7 @@ const Post = (props) => {
 
       <Pressable
         style={styles.location}
-        onPress={() => console.log("Move to map")}
+        onPress={() => navigateMap(post.location)}
       >
         <Ionicons name="location" size={18} color="black" />
         <Text style={{ textDecorationLine: "underline" }}>{post.location}</Text>
@@ -50,6 +49,7 @@ const Post = (props) => {
           <Button
             title="Nhắn tin"
             onPress={() => console.log("Go to message")}
+            color={COLOR.PRIMARY}
           />
         ) : (
           <></>
@@ -57,6 +57,7 @@ const Post = (props) => {
         <Button
           title={`Gọi ${[post.phoneNumber]}`}
           onPress={() => console.log("Calling")}
+          color={COLOR.PRIMARY}
         />
       </View>
       {/* Show the detail Post*/}

@@ -2,14 +2,17 @@ import { NavigationContainer } from '@react-navigation/native';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 import { AuthProvider } from './contexts/AuthProvider';
 import React from 'react';
+import { LocationProvider } from './contexts/UserLocationProvider';
 
 
 export default function App() {
   return (
     <AuthProvider>
-      <NavigationContainer>
-        <BottomTabNavigator/>
-      </NavigationContainer>
+      <LocationProvider>
+        <NavigationContainer>
+          <BottomTabNavigator/>
+        </NavigationContainer>
+      </LocationProvider>
     </AuthProvider>
   );
 }

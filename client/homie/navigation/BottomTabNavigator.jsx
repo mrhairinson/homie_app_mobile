@@ -1,8 +1,7 @@
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import React from "react";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { FontAwesome } from "@expo/vector-icons";
 import COLOR from "../constants/color";
 import Search from "../screens/Search";
 import Map from "../screens/Map";
@@ -25,36 +24,40 @@ const BottomTabNavigator = () => {
       <Tab.Screen
         name="Search"
         component={Search}
+        unmountOnBlur={true}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="search-outline" size={size} color={color} />
+            <Ionicons name="search-sharp" size={size} color={color} />
           ),
         }}
       />
       <Tab.Screen
         name="Map"
         component={Map}
+        unmountOnBlur={true}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="map-outline" size={size} color={color} />
+            <Ionicons name="location" size={size} color={color} />
           ),
         }}
       />
       <Tab.Screen
         name="Message"
         component={Message}
+        unmountOnBlur={true}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="chatbubble-outline" size={size} color={color} />
+            <Ionicons name="chatbubbles-sharp" size={size} color={color} />
           ),
         }}
       />
       <Tab.Screen
         name="Profile"
         component={Profile}
+        unmountOnBlur={true}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="user-o" size={size} color={color} />
+            <FontAwesome name="user" size={size} color={color} />
           ),
         }}
       />

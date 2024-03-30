@@ -1,6 +1,8 @@
 import axios from "axios";
 
 const baseUrl = "http://192.168.1.7:8080/api/v1";
+const accessToken = "pk.eyJ1IjoiaGFpMTIxMjIwMDEiLCJhIjoiY2x1ZTFyMGZtMTU4dTJqa2kybzc2NzQ4cyJ9.0orgMwvt58BgDPgayn-eFA";
+
 
 export const getAllPost = async () => {
     try {
@@ -45,5 +47,17 @@ export const signin = async (phoneNumber) => {
         return response.data;
     } catch (error) {
         return error.response.data;
+    }
+};
+
+export const getUserLocation = async (longitude, latitude) => {
+    try {
+        const response = await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${accessToken}`);
+        return {
+            district: response.data.features[0].context[response.data.features[0].context.length - 3].text,
+            city: response.data.features[0].context[response.data.features[0].context.length - 2].text,
+        };
+    } catch (error) {
+        console.error(error);
     }
 };

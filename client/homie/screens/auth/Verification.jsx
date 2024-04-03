@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, TextInput, Button, StyleSheet, Alert } from "react-native";
-import { verify } from "../apis";
-import { ERROR_MESSAGE, SUCCESS_CODE } from "../constants/error";
+import { verify } from "../../apis";
+import { ERROR_MESSAGE, SUCCESS_CODE } from "../../constants/error";
 
 const Verification = ({ route, navigation }) => {
   const { phoneNumber } = route.params;

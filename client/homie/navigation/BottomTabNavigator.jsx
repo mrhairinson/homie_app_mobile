@@ -5,19 +5,22 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import COLOR from "../constants/color";
 import Search from "../screens/Search";
 import Map from "../screens/Map";
-import Message from "../screens/Message";
+// import Chat from "../screens/Chat";
 import Profile from "../screens/Profile";
+import ChatNavigator from "./ChatNavigator";
+import AuthNavigator from "./AuthNavigator";
+import { useAuth } from "../contexts/AuthProvider";
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator = () => {
+  const { isLoggedIn } = useAuth();
   return (
     <Tab.Navigator
       initialRouteName="Search"
       screenOptions={({ route }) => ({
         tabBarActiveTintColor: COLOR.PRIMARY,
         tabBarShowLabel: false,
-        headerShown: false,
         tabBarStyle: { display: getTabbarVisibility(route) },
       })}
     >
@@ -29,6 +32,7 @@ const BottomTabNavigator = () => {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="search-sharp" size={size} color={color} />
           ),
+          headerShown: false,
         }}
       />
       <Tab.Screen
@@ -39,26 +43,29 @@ const BottomTabNavigator = () => {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="location" size={size} color={color} />
           ),
+          headerShown: false,
         }}
       />
       <Tab.Screen
-        name="Message"
-        component={Message}
+        name="Chats"
+        component={isLoggedIn ? ChatNavigator : AuthNavigator}
         unmountOnBlur={true}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="chatbubbles-sharp" size={size} color={color} />
           ),
+          headerShown: false,
         }}
       />
       <Tab.Screen
         name="Profile"
-        component={Profile}
+        component={isLoggedIn ? Profile : AuthNavigator}
         unmountOnBlur={true}
         options={{
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="user" size={size} color={color} />
           ),
+          headerShown: false,
         }}
       />
     </Tab.Navigator>
@@ -67,10 +74,12 @@ const BottomTabNavigator = () => {
 
 const getTabbarVisibility = (route) => {
   const routeName = getFocusedRouteNameFromRoute(route) ?? "Search";
+  // console.log(routeName);
   if (
     routeName === "Signup" ||
     routeName === "Verification" ||
-    routeName === "Signin"
+    routeName === "Signin" ||
+    routeName === "Message"
   ) {
     return "none";
   }

@@ -13,6 +13,14 @@ const postSchema = new Schema({
         type: String,
         required: true
     },
+    longitude: {
+        type: String,
+        required: true
+    },
+    latitude: {
+        type: String,
+        required: true
+    },
     roomDescription: {
         type: String,
         required: true
@@ -55,6 +63,14 @@ const postSchema = new Schema({
     },
     image: {
         type: [String],
+    },
+    ownerId: {
+        type: String,
+        required: true
+    },
+    ownerName: {
+        type: String,
+        required: true
     },
     expireAt: {
         type: Date,

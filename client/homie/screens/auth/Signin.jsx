@@ -9,13 +9,15 @@ import {
 } from "react-native";
 import { useState } from "react";
 import React from "react";
-import { useAuth } from "../contexts/AuthProvider";
-import { signin } from "../apis";
-import { ERROR_MESSAGE, SUCCESS_CODE } from "../constants/error";
+import { useAuth } from "../../contexts/AuthProvider";
+import { signin } from "../../apis";
+import { ERROR_MESSAGE, SUCCESS_CODE } from "../../constants/error";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import io from "socket.io-client";
+import { SERVER_URL } from "../../constants/resources";
 
 const Signin = ({ navigation }) => {
-  const { setIsLoggedIn, setProfile } = useAuth();
+  const { setIsLoggedIn, setProfile, setSocket } = useAuth();
 
   const [phoneNumber, setPhoneNumber] = useState("");
 
@@ -26,6 +28,7 @@ const Signin = ({ navigation }) => {
       try {
         //Set profile trong context
         setProfile(response.user);
+        console.log(response.user);
         await AsyncStorage.setItem(
           "jwtToken",
           JSON.stringify(response.jwtToken)
@@ -35,6 +38,14 @@ const Signin = ({ navigation }) => {
       }
       //Set context True cho Authentication
       setIsLoggedIn(true);
+      //Tao socket connection
+      const newSocket = io(SERVER_URL);
+      setSocket(newSocket);
+      newSocket.on("connect", () => {
+        console.log("Connected to server");
+        // Upon connecting, send the user ID to the server to identify this client
+        newSocket.emit("join", response.user._id); // Replace 'USER_ID_HERE' with the actual user ID
+      });
     } else {
       Alert.alert("Thông báo", ERROR_MESSAGE[response.errorCode]);
     }

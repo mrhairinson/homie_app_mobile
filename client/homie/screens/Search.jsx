@@ -38,7 +38,6 @@ const Search = ({ navigation }) => {
       try {
         const result = await getUserLocation(longitude, latitude);
         setAddress(result);
-        console.log(result);
       } catch (error) {
         console.error(error);
       }
@@ -48,6 +47,17 @@ const Search = ({ navigation }) => {
 
   const navigateToMap = (location) => {
     navigation.navigate("Map", { location });
+    setUserLocation({
+      longitude: Number(location.longitude),
+      latitude: Number(location.latitude),
+    });
+  };
+
+  const navigateToChat = (receiver) => {
+    navigation.navigate("Chats", {
+      screen: "Message",
+      params: receiver,
+    });
   };
 
   let text = "Waiting..";
@@ -72,7 +82,11 @@ const Search = ({ navigation }) => {
       <FlatList
         data={posts}
         renderItem={({ item }) => (
-          <Post post={item} navigateMap={navigateToMap} />
+          <Post
+            post={item}
+            navigateMap={navigateToMap}
+            navigateChat={navigateToChat}
+          />
         )}
       />
     </View>
@@ -82,6 +96,7 @@ const Search = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     paddingTop: 10,
+    paddingBottom: 25,
   },
   header: {
     display: "flex",

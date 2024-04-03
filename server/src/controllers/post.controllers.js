@@ -62,6 +62,8 @@ const createPost = async (req, res) => {
         const phoneNumber = req.phoneNumber;
         const { postName,
                 location,
+                longitude,
+                latitude,
                 roomDescription,
                 roomArea,
                 roomType,
@@ -72,11 +74,15 @@ const createPost = async (req, res) => {
                 roomPriceCleaning,
                 hasAirConditional,
                 hasHeater,
-                image} = req.body;
+                image,
+                ownerId,
+                ownerName} = req.body;
         const post = new Post({
             phoneNumber: phoneNumber,
             postName: postName,
             location: location,
+            longitude: longitude,
+            latitude: latitude,
             roomDescription: roomDescription,
             roomArea: roomArea,
             roomType: roomType,
@@ -87,7 +93,9 @@ const createPost = async (req, res) => {
             roomPriceCleaning: roomPriceCleaning,
             hasAirConditional: hasAirConditional,
             hasHeater: hasHeater,
-            image: image
+            image: image,
+            ownerId: ownerId,
+            ownerName: ownerName,
         });
         const result = await post.save();
         return res.status(201).json({

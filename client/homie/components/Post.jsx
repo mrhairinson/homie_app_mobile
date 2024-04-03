@@ -6,7 +6,7 @@ import { Ionicons, MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 import { useAuth } from "../contexts/AuthProvider";
 import { formatMoneyToVND } from "../utils";
 
-const Post = ({ post, navigateMap }) => {
+const Post = ({ post, navigateMap, navigateChat }) => {
   const { isLoggedIn } = useAuth();
   const [showDetail, setShowDetail] = useState(false);
   const images = [];
@@ -31,10 +31,7 @@ const Post = ({ post, navigateMap }) => {
       {/* Name  */}
       <Text style={styles.postName}>{post.postName}</Text>
 
-      <Pressable
-        style={styles.location}
-        onPress={() => navigateMap(post.location)}
-      >
+      <Pressable style={styles.location} onPress={() => navigateMap(post)}>
         <Ionicons name="location" size={18} color="black" />
         <Text style={{ textDecorationLine: "underline" }}>{post.location}</Text>
       </Pressable>
@@ -48,7 +45,12 @@ const Post = ({ post, navigateMap }) => {
         {isLoggedIn ? (
           <Button
             title="Nhắn tin"
-            onPress={() => console.log("Go to message")}
+            onPress={() => {
+              navigateChat({
+                receiverId: post.ownerId,
+                receiverName: post.ownerName,
+              });
+            }}
             color={COLOR.PRIMARY}
           />
         ) : (

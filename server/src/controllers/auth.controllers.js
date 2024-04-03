@@ -118,7 +118,6 @@ const signin = async(req, res) => {
         }
         //Create JWT
         const jwtToken = generateJwt(phoneNumber);
-        console.log(jwtToken);
         return res.status(200).json({
             jwtToken: jwtToken,
             user: user,

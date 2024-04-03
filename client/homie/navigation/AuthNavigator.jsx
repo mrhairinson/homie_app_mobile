@@ -1,10 +1,10 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
-import NotLogin from "../screens/NotLogin";
-import Signin from "../screens/Signin";
-import Signup from "../screens/Signup";
-import Verification from "../screens/Verification";
-import Search from "../screens/Search";
+import NotLogin from "../screens/auth/NotLogin";
+import Signin from "../screens/auth/Signin";
+import Signup from "../screens/auth/Signup";
+import Verification from "../screens/auth/Verification";
+// import Search from "../screens/Search";
 
 const Stack = createStackNavigator();
 
@@ -14,7 +14,7 @@ const AuthNavigator = () => {
       <Stack.Screen
         name="NotLogin"
         component={NotLogin}
-        options={{ title: "Bạn chưa đăng nhập" }}
+        options={{ title: "Bạn cần đăng nhập để sử dụng!" }}
       />
       <Stack.Screen
         name="Signin"
@@ -31,11 +31,11 @@ const AuthNavigator = () => {
         component={Verification}
         options={{ title: "Xác thực OTP" }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Search"
         options={{ headerShown: false }}
         component={Search}
-      />
+      /> */}
     </Stack.Navigator>
   );
 };

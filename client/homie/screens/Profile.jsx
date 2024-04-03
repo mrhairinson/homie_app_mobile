@@ -3,9 +3,10 @@ import { View, Text, Button, StyleSheet } from "react-native";
 import { useAuth } from "../contexts/AuthProvider";
 import AuthNavigator from "../navigation/AuthNavigator";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import io from "socket.io-client";
 
 const Profile = () => {
-  const { isLoggedIn, setIsLoggedIn, profile } = useAuth();
+  const { setIsLoggedIn, profile, socket } = useAuth();
 
   const handleLogout = async () => {
     try {
@@ -15,9 +16,10 @@ const Profile = () => {
       console.error("Error removing data:", error);
     }
     setIsLoggedIn(false);
+    socket.disconnect();
   };
 
-  return isLoggedIn ? (
+  return (
     <View style={styles.container}>
       <Text style={styles.heading}>Profile</Text>
       <View style={styles.userInfo}>
@@ -27,8 +29,6 @@ const Profile = () => {
       </View>
       <Button title="Đăng xuất" onPress={handleLogout} />
     </View>
-  ) : (
-    <AuthNavigator />
   );
 };
 

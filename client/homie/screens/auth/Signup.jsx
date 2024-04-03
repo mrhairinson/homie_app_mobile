@@ -9,8 +9,8 @@ import {
 } from "react-native";
 import { useState } from "react";
 import React from "react";
-import { signup } from "../apis";
-import { ERROR_MESSAGE, SUCCESS_CODE } from "../constants/error";
+import { signup } from "../../apis";
+import { ERROR_MESSAGE, SUCCESS_CODE } from "../../constants/error";
 
 const Signup = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState("");

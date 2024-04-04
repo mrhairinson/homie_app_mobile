@@ -8,7 +8,7 @@ const {
     getUserPosts
 } = require('../controllers/user.controllers');
 
-router.get('/', authenticateToken ,getUser);
+router.get('/:id' ,getUser);
 router.get('/posts', authenticateToken ,getUserPosts);
 
 module.exports = router;

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext();
 
@@ -6,6 +6,11 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [profile, setProfile] = useState({});
   const [socket, setSocket] = useState(null);
+  const [chats, setChats] = useState([]);
+
+  useEffect(() => {
+    console.log("Auth context");
+  }, []);
 
   return (
     <AuthContext.Provider
@@ -16,6 +21,8 @@ export const AuthProvider = ({ children }) => {
         setProfile,
         socket,
         setSocket,
+        chats,
+        setChats,
       }}
     >
       {children}

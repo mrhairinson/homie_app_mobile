@@ -5,10 +5,12 @@ const router = express.Router();
 
 const {
     createMessage,
-    getMessage
+    getMessage,
+    getNewestMessage
 } = require('../controllers/message.controllers');
 
 router.post('/' ,createMessage);
 router.get('/:chatId' ,getMessage);
+router.get('/newest/:chatId' ,getNewestMessage);
 
 module.exports = router;

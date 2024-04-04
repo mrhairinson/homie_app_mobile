@@ -10,45 +10,46 @@ import {
 } from "react-native";
 import COLOR from "../../constants/color";
 import { useAuth } from "../../contexts/AuthProvider";
+import { getChat, getMessages } from "../../apis";
 
-// const SERVER_URL = "http://192.168.1.7:8080";
-
-const Message = ({ route }) => {
-  //   const { receiverId, receiverName } = route.params;
-  const { profile } = useAuth();
+const Message = ({ route, navigation }) => {
+  const { profile, socket } = useAuth();
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
-  const { receiverId, receiverName } = route
-    ? route.params
-    : { receiverId: "", receiverName: "" };
-  const [socket, setSocket] = useState(null);
+  const receiverUser = route.params;
 
   useEffect(() => {
-    // const newSocket = io(SERVER_URL);
-    // setSocket(newSocket);
-    // newSocket.on("connect", () => {
-    //   console.log("Connected to server");
-    // });
     //Fetch messages from the server
-    console.log(
-      "Get chat of senderID, and receiverId:\nSenderId:",
-      profile._id,
-      "\nReceiverId:",
-      receiverId
-    );
-    // return () => {
-    //   newSocket.disconnect();
-    // };
-  }, [profile]);
+    const fetchMessage = async (req, res) => {
+      //tìm chat giữa 2 người
+      let response = await getChat(profile._id, receiverUser?.receiverId);
+      //Nếu chưa có thì tạo chat luôn
+      if (!response) {
+        console.log("Tạo chat đã");
+      } else {
+        //Nếu có rồi
+        //Lấy message
+        let messages = await getMessages(response._id);
+        setMessages(messages);
+      }
+    };
+    fetchMessage();
+    return () => {
+      //Reset Stack tree
+      navigation.navigate("Chats", {
+        screen: "Chat",
+      });
+      // Clean-up tasks
+    };
+  }, []);
 
   const sendMessage = () => {
     if (inputMessage.trim() === "") {
       return; // Don't send empty messages
     }
     const newMessage = {
-      id: messages.length + 1,
+      senderId: profile._id, // You can add logic here to differentiate sender if needed
       text: inputMessage,
-      sender: "user", // You can add logic here to differentiate sender if needed
     };
     setMessages([...messages, newMessage]);
     setInputMessage("");
@@ -58,7 +59,9 @@ const Message = ({ route }) => {
     <View
       style={[
         styles.messageContainer,
-        item.sender === "user" ? styles.userMessage : styles.otherMessage,
+        item.senderId === profile._id
+          ? styles.userMessage
+          : styles.otherMessage,
       ]}
     >
       <Text style={styles.messageText}>{item.text}</Text>
@@ -67,12 +70,12 @@ const Message = ({ route }) => {
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-        <Text style={styles.receiver}>Tới, {receiverName}</Text>
+        <Text style={styles.receiver}>Tới, {receiverUser?.receiverName}</Text>
       </View>
       <FlatList
         data={messages}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
+        // keyExtractor={(item) => item.id.toString()}
       />
       <View style={styles.inputContainer}>
         <TextInput

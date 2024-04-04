@@ -1,15 +1,17 @@
 const { User } = require('../models/user.models');
 const { Post } = require('../models/post.models');
+const { errorCode, errorMessage } = require('../resources/index');
 
 const getUser = async (req, res) => {
     try {
-        const phoneNumber = req.phoneNumber;
-        const user = await User.findOne({phoneNumber: phoneNumber});
+        const userId = req.params.id;
+        const user = await User.findOne({_id: userId});
         return res.status(200).json({
             message: "Get user successfully",
             data: user
         });
     } catch (error) {
+        console.log(error)
         return res.status(500).json({
             message: error,
             errorCode: errorCode.INTERNAL_SERVER_ERROR

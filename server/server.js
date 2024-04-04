@@ -32,14 +32,24 @@ const server = createServer(app);
 const io = new Server(server);
 io.on('connection', (socket) => {
   console.log('a user connected with id: ', socket.id);
-
   socket.on('join', (userId) => {
     console.log('user joined with id: ', userId);
     activeSockets[userId] = socket.id;
+    console.log('User', activeSockets)
   });
 
   socket.on('disconnect', () => {
     console.log('user disconnected');
+  });
+
+  socket.on('message', (data) => {
+    console.log('Message received:', data);
+    const { senderId, receiverId, message } = data;
+    const receiverSocket = activeSockets[receiverId];
+
+    if (receiverSocket) {
+      io.to(receiverSocket).emit('message', { senderId:senderId, message:message });
+    }
   });
 });
 //DB connection

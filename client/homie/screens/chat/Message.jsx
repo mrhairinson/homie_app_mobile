@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 // import io from "socket.io-client";
 import {
   View,
@@ -10,28 +10,58 @@ import {
 } from "react-native";
 import COLOR from "../../constants/color";
 import { useAuth } from "../../contexts/AuthProvider";
-import { getChat, getMessages } from "../../apis";
+import { getChat, getMessages, createMessage, createChat } from "../../apis";
 
 const Message = ({ route, navigation }) => {
   const { profile, socket } = useAuth();
   const [messages, setMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [inputMessage, setInputMessage] = useState("");
+  const [chatId, setChatId] = useState("");
   const receiverUser = route.params;
+  const flatListRef = useRef(null);
+
+  socket.on("getMessage", (message) => {
+    const newMessage = message;
+    if (newMessage.chatId === chatId) {
+      setMessages([...messages, newMessage]);
+    }
+  });
+  useEffect(() => {
+    return () => {
+      socket.off("getMessage");
+    };
+  }, [socket]);
+
+  const scrollToBottom = () => {
+    flatListRef.current.scrollToEnd({ animated: true });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   useEffect(() => {
     //Fetch messages from the server
-    const fetchMessage = async (req, res) => {
+    const fetchMessage = async () => {
       //tìm chat giữa 2 người
-      let response = await getChat(profile._id, receiverUser?.receiverId);
+      const response = await getChat(profile._id, receiverUser?.receiverId);
       //Nếu chưa có thì tạo chat luôn
       if (!response) {
-        console.log("Tạo chat đã");
+        let newChatId = await createChat({
+          firstId: profile._id,
+          secondId: receiverUser?.receiverId,
+        });
+        setChatId(newChatId);
       } else {
-        //Nếu có rồi
+        //Nếu có rồi lấy ra chat ID
+        setChatId(response._id);
         //Lấy message
         let messages = await getMessages(response._id);
         setMessages(messages);
+        scrollToBottom();
       }
+      setIsLoading(false);
     };
     fetchMessage();
     return () => {
@@ -39,7 +69,6 @@ const Message = ({ route, navigation }) => {
       navigation.navigate("Chats", {
         screen: "Chat",
       });
-      // Clean-up tasks
     };
   }, []);
 
@@ -48,11 +77,20 @@ const Message = ({ route, navigation }) => {
       return; // Don't send empty messages
     }
     const newMessage = {
+      chatId,
       senderId: profile._id, // You can add logic here to differentiate sender if needed
       text: inputMessage,
     };
     setMessages([...messages, newMessage]);
     setInputMessage("");
+    //Emit socket message
+    socket.emit("message", {
+      chatId: chatId,
+      receiverId: receiverUser?.receiverId,
+      message: inputMessage,
+    });
+    //Lưu message vào DB
+    createMessage(newMessage);
   };
 
   const renderItem = ({ item }) => (
@@ -73,9 +111,10 @@ const Message = ({ route, navigation }) => {
         <Text style={styles.receiver}>Tới, {receiverUser?.receiverName}</Text>
       </View>
       <FlatList
+        ref={flatListRef}
         data={messages}
         renderItem={renderItem}
-        // keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item, index) => index.toString()}
       />
       <View style={styles.inputContainer}>
         <TextInput
@@ -85,7 +124,11 @@ const Message = ({ route, navigation }) => {
           placeholder="Nhập tin nhắn..."
           placeholderTextColor="#999999"
         />
-        <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
+        <TouchableOpacity
+          disabled={isLoading}
+          style={styles.sendButton}
+          onPress={sendMessage}
+        >
           <Text style={styles.sendButtonText}>Gửi</Text>
         </TouchableOpacity>
       </View>

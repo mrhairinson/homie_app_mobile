@@ -41,7 +41,6 @@ const Signin = ({ navigation }) => {
       //Lấy dữ liệu chats box
       response = await getChats(userId);
       setChats(response ? response : []);
-      console.log(response);
       //Set context True cho Authentication
       setIsLoggedIn(true);
       //Tao socket connection

@@ -111,11 +111,38 @@ export const getMessages = async (chatId) => {
   }
 };
 
+export const createMessage = async ({ chatId, senderId, text }) => {
+  try {
+    reqData = {
+      chatId,
+      senderId,
+      text,
+    };
+    const response = await axios.post(`${baseUrl}/message`, reqData);
+    return response.data.data;
+  } catch (error) {
+    console.error("Error fetch data: ", error);
+  }
+};
+
 export const getChat = async (firstId, secondId) => {
   try {
     const response = await axios.get(
       `${baseUrl}/chat/find/${firstId}/${secondId}`
     );
+    return response.data.data;
+  } catch (error) {
+    console.error("Error fetch data: ", error);
+  }
+};
+
+export const createChat = async ({ firstId, secondId }) => {
+  try {
+    reqData = {
+      firstId,
+      secondId,
+    };
+    const response = await axios.post(`${baseUrl}/chat`, reqData);
     return response.data.data;
   } catch (error) {
     console.error("Error fetch data: ", error);

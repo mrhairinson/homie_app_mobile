@@ -52,11 +52,11 @@ io.on("connection", (socket) => {
 
   socket.on("message", (data) => {
     console.log("Message received:", data);
-    const { chatId, receiverId, message } = data;
+    const { chatId, senderId, receiverId, message } = data;
     const receiverSocket = activeSockets[receiverId];
     const sendBackData = {
       chatId: chatId,
-      senderId: receiverId,
+      senderId: senderId,
       text: message,
     };
     if (receiverSocket) {

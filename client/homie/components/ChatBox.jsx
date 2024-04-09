@@ -1,11 +1,12 @@
 import { Text, StyleSheet, Pressable } from "react-native";
 import { useState, useEffect } from "react";
 import { getUser, getNewestMessage } from "../apis";
+import { useAuth } from "../contexts/AuthProvider";
 import React from "react";
 // import { useFetchRecipient } from "../hooks/useFetchRecipient";
 
 const ChatBox = ({ chat, user, navigateChat }) => {
-  //   const { reciver } = useFetchRecipient(chat, user);
+  const { chats } = useAuth();
   const [recipient, setRecipient] = useState(null);
   const [message, setMessage] = useState("");
 
@@ -22,7 +23,7 @@ const ChatBox = ({ chat, user, navigateChat }) => {
       setMessage(response);
     };
     getChat();
-  }, []);
+  }, [chats]);
   return (
     <Pressable
       onPress={() => {

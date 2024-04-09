@@ -14,7 +14,7 @@ import { useAuth } from "../contexts/AuthProvider";
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator = () => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, socket } = useAuth();
   return (
     <Tab.Navigator
       initialRouteName="Search"

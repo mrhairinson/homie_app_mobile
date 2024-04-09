@@ -10,10 +10,16 @@ import {
 } from "react-native";
 import COLOR from "../../constants/color";
 import { useAuth } from "../../contexts/AuthProvider";
-import { getChat, getMessages, createMessage, createChat } from "../../apis";
+import {
+  getChat,
+  getMessages,
+  createMessage,
+  createChat,
+  getChats,
+} from "../../apis";
 
 const Message = ({ route, navigation }) => {
-  const { profile, socket } = useAuth();
+  const { profile, socket, setChats } = useAuth();
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [inputMessage, setInputMessage] = useState("");
@@ -25,13 +31,14 @@ const Message = ({ route, navigation }) => {
     const newMessage = message;
     if (newMessage.chatId === chatId) {
       setMessages([...messages, newMessage]);
+      //Update trang thai da doc cua reciever
     }
   });
-  useEffect(() => {
-    return () => {
-      socket.off("getMessage");
-    };
-  }, [socket]);
+  // useEffect(() => {
+  //   return () => {
+  //     socket.off("getMessage");
+  //   };
+  // }, [socket]);
 
   const scrollToBottom = () => {
     flatListRef.current.scrollToEnd({ animated: true });
@@ -72,7 +79,7 @@ const Message = ({ route, navigation }) => {
     };
   }, []);
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (inputMessage.trim() === "") {
       return; // Don't send empty messages
     }
@@ -83,14 +90,19 @@ const Message = ({ route, navigation }) => {
     };
     setMessages([...messages, newMessage]);
     setInputMessage("");
+    //Lưu message vào DB
+    await createMessage(newMessage);
     //Emit socket message
     socket.emit("message", {
       chatId: chatId,
+      senderId: profile._id,
       receiverId: receiverUser?.receiverId,
       message: inputMessage,
     });
-    //Lưu message vào DB
-    createMessage(newMessage);
+    //Update chats
+    const res = await getChats(profile._id);
+    console.log("Send mess update chats");
+    setChats(res ? res : []);
   };
 
   const renderItem = ({ item }) => (

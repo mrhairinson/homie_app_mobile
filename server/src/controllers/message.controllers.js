@@ -15,8 +15,8 @@ const createMessage = async (req, res) => {
     const response = await message.save();
     return res.status(201).json({
       errorCode: errorCode.SUCCESS,
-      message: "Save chat Success",
-      data: response,
+      message: "Save message Success",
+      data: message,
     });
   } catch (error) {
     console.log(error);

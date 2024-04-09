@@ -19,10 +19,6 @@ const Chat = ({ navigation }) => {
     });
   };
 
-  useEffect(() => {
-    console.log("Fetch Chat");
-    return;
-  }, []);
   return (
     <View style={styles.container}>
       <FlatList

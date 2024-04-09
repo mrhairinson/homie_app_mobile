@@ -10,7 +10,7 @@ import {
 import { useState } from "react";
 import React from "react";
 import { useAuth } from "../../contexts/AuthProvider";
-import { signin, getChats } from "../../apis";
+import { signin } from "../../apis";
 import { ERROR_MESSAGE, SUCCESS_CODE } from "../../constants/error";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import io from "socket.io-client";
@@ -26,9 +26,6 @@ const Signin = ({ navigation }) => {
     if (response.errorCode === SUCCESS_CODE) {
       //Lưu data vào Async Storage
       try {
-        //Set profile trong context
-        setProfile(response.user);
-        console.log(response.user);
         await AsyncStorage.setItem(
           "jwtToken",
           JSON.stringify(response.jwtToken)
@@ -38,11 +35,10 @@ const Signin = ({ navigation }) => {
       }
       //Lấy userId
       let userId = response?.user?._id;
-      //Lấy dữ liệu chats box
-      response = await getChats(userId);
-      setChats(response ? response : []);
       //Set context True cho Authentication
       setIsLoggedIn(true);
+      //Set profile trong context
+      setProfile(response.user);
       //Tao socket connection
       const newSocket = io(SERVER_URL);
       setSocket(newSocket);

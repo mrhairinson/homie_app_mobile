@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "http://192.168.1.7:8080/api/v1";
+const baseUrl = "http://192.168.1.122:8080/api/v1";
 const accessToken =
   "pk.eyJ1IjoiaGFpMTIxMjIwMDEiLCJhIjoiY2x1ZTFyMGZtMTU4dTJqa2kybzc2NzQ4cyJ9.0orgMwvt58BgDPgayn-eFA";
 

@@ -3,7 +3,6 @@ import { StatusBar } from "react-native";
 import React, { useEffect, useState } from "react";
 import Post from "../components/Post";
 import { getAllPost, getUserLocation } from "../apis";
-import * as Location from "expo-location";
 import { useLocation } from "../contexts/UserLocationProvider";
 import { FontAwesome } from "@expo/vector-icons";
 import COLOR from "../constants/color";
@@ -12,7 +11,6 @@ const Search = ({ navigation }) => {
   const [posts, setPosts] = useState(null);
   const [address, setAddress] = useState(null);
   const { userLocation, setUserLocation } = useLocation();
-  const [errorMsg, setErrorMsg] = useState(null);
 
   const fetchPost = async () => {
     try {
@@ -26,22 +24,15 @@ const Search = ({ navigation }) => {
   useEffect(() => {
     fetchPost();
     (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
-      //Lấy vị trí hiện tại của người dùng
-      let curLocation = await Location.getCurrentPositionAsync({});
-      let longitude = curLocation.coords.longitude;
-      let latitude = curLocation.coords.latitude;
+      let longitude = 105.74077998829989;
+      let latitude = 21.03108049881949;
       try {
         const result = await getUserLocation(longitude, latitude);
         setAddress(result);
       } catch (error) {
         console.error(error);
       }
-      setUserLocation(curLocation.coords);
+      setUserLocation({ longitude: longitude, latitude: latitude });
     })();
   }, []);
 
@@ -59,13 +50,6 @@ const Search = ({ navigation }) => {
       params: receiver,
     });
   };
-
-  let text = "Waiting..";
-  if (errorMsg) {
-    text = errorMsg;
-  } else if (userLocation) {
-    text = JSON.stringify(userLocation);
-  }
   return (
     <View style={styles.container}>
       <StatusBar />

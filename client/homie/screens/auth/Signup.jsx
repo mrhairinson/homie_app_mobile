@@ -14,10 +14,11 @@ import { ERROR_MESSAGE, SUCCESS_CODE } from "../../constants/error";
 
 const Signup = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSignUp = async () => {
     // Xử lý logic đăng ký ở đây, chẳng hạn như gửi mã xác nhận
-    const { errorCode } = await signup(phoneNumber);
+    const { errorCode } = await signup(phoneNumber, password);
     console.log(errorCode);
     errorCode === SUCCESS_CODE
       ? navigation.navigate("Verification", {
@@ -35,10 +36,16 @@ const Signup = ({ navigation }) => {
         value={phoneNumber}
         keyboardType="phone-pad"
       />
+      <TextInput
+        style={styles.password}
+        placeholder="Nhập mật khẩu"
+        onChangeText={(text) => setPassword(text)}
+        value={password}
+      />
       <Button
         title="Đăng ký"
         onPress={handleSignUp}
-        disabled={!phoneNumber} // Tắt nút nếu số điện thoại trống
+        disabled={!phoneNumber || !password} // Tắt nút nếu số điện thoại trống
       />
       <View style={styles.changeSignIn}>
         <Text>Đã có tài khoản?</Text>
@@ -66,6 +73,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 20,
     marginTop: 20,
+  },
+  password: {
+    height: 40,
+    width: "100%",
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 20,
   },
   changeSignIn: {
     flexDirection: "row",

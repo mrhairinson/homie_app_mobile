@@ -1,21 +1,27 @@
-const { Schema, model } = require('mongoose');
-const jwt = require('jsonwebtoken');
+const { Schema, model } = require("mongoose");
+const jwt = require("jsonwebtoken");
 
 const userSchema = new Schema(
-    {
-    phoneNumber: { 
-        type: String, required: true, unique: true
+  {
+    phoneNumber: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
     },
     name: {
-        type: String
+      type: String,
     },
     dob: {
-        type: String
+      type: String,
     },
-    },
-    {
-        timestamps: true
-    }
+  },
+  {
+    timestamps: true,
+  }
 );
 
-module.exports.User = model('User', userSchema);
+module.exports.User = model("User", userSchema);

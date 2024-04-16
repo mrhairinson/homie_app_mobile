@@ -20,9 +20,10 @@ const Signin = ({ navigation }) => {
   const { setIsLoggedIn, setProfile, setSocket, setChats } = useAuth();
 
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
-    let response = await signin(phoneNumber);
+    let response = await signin(phoneNumber, password);
     if (response.errorCode === SUCCESS_CODE) {
       //Lưu data vào Async Storage
       try {
@@ -61,10 +62,16 @@ const Signin = ({ navigation }) => {
         value={phoneNumber}
         keyboardType="phone-pad"
       />
+      <TextInput
+        style={styles.password}
+        placeholder="Nhập mật khẩu"
+        onChangeText={(text) => setPassword(text)}
+        value={password}
+      />
       <Button
         title="Đăng nhập"
         onPress={handleLogin}
-        disabled={!phoneNumber} // Disable button if phone number is empty
+        disabled={!phoneNumber || !password} // Disable button if phone number is empty
       />
       <View style={styles.changeSignUp}>
         <Text>Bạn chưa có tài khoản?</Text>
@@ -92,6 +99,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 20,
     marginTop: 20,
+  },
+  password: {
+    height: 40,
+    width: "100%",
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 20,
   },
   changeSignUp: {
     flexDirection: "row",

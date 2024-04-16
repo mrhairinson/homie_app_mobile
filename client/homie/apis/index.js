@@ -1,8 +1,9 @@
 import axios from "axios";
 
-const baseUrl = "http://192.168.1.122:8080/api/v1";
-const accessToken =
-  "pk.eyJ1IjoiaGFpMTIxMjIwMDEiLCJhIjoiY2x1ZTFyMGZtMTU4dTJqa2kybzc2NzQ4cyJ9.0orgMwvt58BgDPgayn-eFA";
+import { BASE_URL, MAP_BOX_PUBLIC_KEY } from "@env";
+
+const baseUrl = BASE_URL;
+const accessToken = MAP_BOX_PUBLIC_KEY;
 
 // Lấy danh sách bài đăng
 export const getAllPost = async () => {
@@ -15,10 +16,11 @@ export const getAllPost = async () => {
 };
 
 //Đăng kí
-export const signup = async (phoneNumber) => {
+export const signup = async (phoneNumber, password) => {
   try {
     const reqBody = {
       phoneNumber: phoneNumber,
+      password: password,
     };
     const response = await axios.post(`${baseUrl}/auth/signup`, reqBody);
     return response.data;
@@ -42,10 +44,11 @@ export const verify = async (phoneNumber, otp) => {
 };
 
 //Đăng nhập
-export const signin = async (phoneNumber) => {
+export const signin = async (phoneNumber, password) => {
   try {
     const reqBody = {
       phoneNumber: phoneNumber,
+      password: password,
     };
     const response = await axios.post(`${baseUrl}/auth/signin`, reqBody);
     return response.data;

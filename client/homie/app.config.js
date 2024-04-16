@@ -1,5 +1,3 @@
-// import { MAP_BOX_PRIVATE_KEY, EAS_PROTECTED_ID } from ".env";
-
 export default {
   expo: {
     name: "homie",
@@ -36,8 +34,7 @@ export default {
       [
         "@rnmapbox/maps",
         {
-          RNMapboxMapsDownloadToken:
-            "sk.eyJ1IjoiaGFpMTIxMjIwMDEiLCJhIjoiY2x1czYwcTlyMGV5YTJxcGtlbnFzb2t0cSJ9.c9_ia35nZ6n3Gj3vKKlGig",
+          RNMapboxMapsDownloadToken: process.env.MAP_BOX_PRIVATE_KEY,
         },
       ],
       [

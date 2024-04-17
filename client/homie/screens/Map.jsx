@@ -1,25 +1,58 @@
 import { View, Image, StyleSheet } from "react-native";
 import React from "react";
 import { useEffect } from "react";
-import MapView, { Marker } from "react-native-maps";
 import Mapbox from "@rnmapbox/maps";
 // import * as Location from "expo-location";
 import { useLocation } from "../contexts/UserLocationProvider";
+import { MAP_BOX_PUBLIC_KEY } from "@env";
+import COLOR from "../constants/color";
 
-Mapbox.setAccessToken(
-  "pk.eyJ1IjoiaGFpMTIxMjIwMDEiLCJhIjoiY2x1ZTFyMGZtMTU4dTJqa2kybzc2NzQ4cyJ9.0orgMwvt58BgDPgayn-eFA"
-);
+Mapbox.setAccessToken(MAP_BOX_PUBLIC_KEY);
 
 const Map = ({ route }) => {
-  // const [curLocation, setCurLocation] = useState(null);
   const { userLocation, setUserLocation } = useLocation();
+  useEffect(() => {
+    console.log("Map");
+  }, []);
+  // const [curLocation, setCurLocation] = useState(null);
   // const [errorMsg, setErrorMsg] = useState(null);
   const location = route.params ?? "User location";
   // console.log(location.location);
   return (
     <View style={styles.page}>
       <View style={styles.container}>
-        <Mapbox.MapView style={styles.map} />
+        <Mapbox.MapView style={styles.map}>
+          <Mapbox.Images>
+            <Mapbox.Image name="topImage">
+              <View
+                style={{
+                  borderColor: COLOR.PRIMARY,
+                  borderWidth: 2,
+                  width: 8,
+                  height: 8,
+                  borderRadius: 8,
+                  backgroundColor: COLOR.LIGHT_GRAY,
+                }}
+              />
+            </Mapbox.Image>
+          </Mapbox.Images>
+          <Mapbox.Camera
+            defaultSettings={{
+              zoomLevel: 14,
+              centerCoordinate: [userLocation.longitude, userLocation.latitude],
+            }}
+          />
+          <Mapbox.LocationPuck
+            topImage="topImage"
+            visible={true}
+            scale={["interpolate", ["linear"], ["zoom"], 10, 1.0, 20, 4.0]}
+            pulsing={{
+              isEnabled: true,
+              color: "teal",
+              radius: 50.0,
+            }}
+          />
+        </Mapbox.MapView>
       </View>
     </View>
     // userLocation?.latitude && (

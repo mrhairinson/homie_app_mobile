@@ -24,17 +24,16 @@ const Search = ({ navigation }) => {
   useEffect(() => {
     fetchPost();
     (async () => {
-      let longitude = 105.74077998829989;
-      let latitude = 21.03108049881949;
+      let longitude = userLocation?.longitude;
+      let latitude = userLocation?.latitude;
       try {
         const result = await getUserLocation(longitude, latitude);
         setAddress(result);
       } catch (error) {
         console.error(error);
       }
-      setUserLocation({ longitude: longitude, latitude: latitude });
     })();
-  }, []);
+  }, [userLocation]);
 
   const navigateToMap = (location) => {
     navigation.navigate("Map", { location });
@@ -56,7 +55,7 @@ const Search = ({ navigation }) => {
       <View style={styles.header}>
         <View>
           <Text style={styles.address}>
-            {address?.district}, {address?.city}
+            {userLocation ? `${address?.district}, ${address?.city}` : ","}
           </Text>
         </View>
         <Pressable style={styles.filter} onPress={() => console.log("filter")}>

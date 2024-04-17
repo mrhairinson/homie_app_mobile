@@ -4,7 +4,7 @@ import * as Location from "expo-location";
 const LocationContext = createContext();
 
 export const LocationProvider = ({ children }) => {
-  const [userLocation, setUserLocation] = useState({});
+  const [userLocation, setUserLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
   useEffect(() => {
@@ -16,8 +16,7 @@ export const LocationProvider = ({ children }) => {
       }
 
       let location = await Location.getCurrentPositionAsync({});
-      setUserLocation(location);
-      console.log("Home location: ", location);
+      setUserLocation(location.coords);
     })();
   }, []);
 

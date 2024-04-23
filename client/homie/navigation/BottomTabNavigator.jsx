@@ -6,7 +6,7 @@ import COLOR from "../constants/color";
 import Search from "../screens/Search";
 import Map from "../screens/Map";
 // import Chat from "../screens/Chat";
-import Profile from "../screens/Profile";
+import Profile from "../screens/profile/Profile";
 import ChatNavigator from "./ChatNavigator";
 import AuthNavigator from "./AuthNavigator";
 import { useAuth } from "../contexts/AuthProvider";

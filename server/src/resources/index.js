@@ -10,6 +10,7 @@ const errorCode = {
   DOCUMENT_NOT_FOUND: "e008",
   INVALID_PASSWORD: "e009",
   WRONG_PASSWORD: "e010",
+  LARGE_IMAGE_SIZE: "e011",
 };
 
 const errorMessage = {
@@ -23,6 +24,7 @@ const errorMessage = {
   DOCUMENT_NOT_FOUND: "This document is not found",
   INVALID_PASSWORD: "Password is invalid",
   WRONG_PASSWORD: "Wrong pasword",
+  LARGE_IMAGE_SIZE: "Image size is to large (> 1mb)",
 };
 
 module.exports = { errorCode, errorMessage };

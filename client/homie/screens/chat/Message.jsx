@@ -34,11 +34,6 @@ const Message = ({ route, navigation }) => {
       //Update trang thai da doc cua reciever
     }
   });
-  // useEffect(() => {
-  //   return () => {
-  //     socket.off("getMessage");
-  //   };
-  // }, [socket]);
 
   const scrollToBottom = () => {
     flatListRef.current.scrollToEnd({ animated: true });
@@ -101,7 +96,6 @@ const Message = ({ route, navigation }) => {
     });
     //Update chats
     const res = await getChats(profile._id);
-    console.log("Send mess update chats");
     setChats(res ? res : []);
   };
 

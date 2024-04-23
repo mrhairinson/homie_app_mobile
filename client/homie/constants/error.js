@@ -9,6 +9,7 @@ export const ERROR_MESSAGE = {
   e008: "É không có tài liệu này",
   e009: "Mật khẩu không hợp lệ (Lớn hơn 6 lý tự, không chứa ký tự đặc biệt)",
   e010: "Sai mật khẩu",
+  e011: "Dung lượng ảnh không quá 1MB",
 };
 
 export const SUCCESS_CODE = "e000";

@@ -2,6 +2,8 @@ import axios from "axios";
 
 import { BASE_URL, MAP_BOX_PUBLIC_KEY } from "@env";
 
+import { getJwtToken } from "../utils";
+
 const baseUrl = BASE_URL;
 const accessToken = MAP_BOX_PUBLIC_KEY;
 
@@ -51,6 +53,25 @@ export const signin = async (phoneNumber, password) => {
       password: password,
     };
     const response = await axios.post(`${baseUrl}/auth/signin`, reqBody);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
+//Sửa thông tin người dùng
+export const updateUser = async (updateObj, id) => {
+  try {
+    const jwtToken = await getJwtToken();
+    console.log(jwtToken);
+    const headers = {
+      authorization: `Bearer ${jwtToken}`,
+    };
+    const response = await axios.patch(
+      `${baseUrl}/user/update/${id}`,
+      updateObj,
+      { headers }
+    );
     return response.data;
   } catch (error) {
     return error.response.data;

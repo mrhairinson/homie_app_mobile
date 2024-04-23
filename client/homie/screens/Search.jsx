@@ -1,4 +1,11 @@
-import { View, StyleSheet, FlatList, Pressable, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  Pressable,
+  Text,
+  Linking,
+} from "react-native";
 import { StatusBar } from "react-native";
 import React, { useEffect, useState } from "react";
 import Post from "../components/Post";
@@ -36,11 +43,17 @@ const Search = ({ navigation }) => {
   }, [userLocation]);
 
   const navigateToMap = (location) => {
-    navigation.navigate("Map", { location });
-    setUserLocation({
-      longitude: Number(location.longitude),
-      latitude: Number(location.latitude),
-    });
+    // navigation.navigate("Map", { location });
+    // Construct the URL with the start and end coordinates
+    const url = `https://www.google.com/maps/dir/${userLocation.latitude},${userLocation.longitude}/${location.latitude},${location.longitude}`;
+    // Open Google Maps with directions
+    Linking.openURL(url).catch((err) =>
+      console.error("An error occurred", err)
+    );
+    // setUserLocation({
+    //   longitude: Number(location.longitude),
+    //   latitude: Number(location.latitude),
+    // });
   };
 
   const navigateToChat = (receiver) => {

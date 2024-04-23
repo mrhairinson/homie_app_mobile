@@ -40,7 +40,14 @@ export default {
       [
         "expo-location",
         {
-          locationWhenInUsePermission: "Allow Homie to use your location.",
+          locationWhenInUsePermission: "Cho phép HOMiE sử dụng vị trí của bạn.",
+        },
+      ],
+      [
+        "expo-image-picker",
+        {
+          photosPermission: "Cho phép HOMiE truy cập kho ảnh của bạn.",
+          cameraPermission: "Cho phép HOMiE sử dụng sử dụng camera của bạn.",
         },
       ],
     ],

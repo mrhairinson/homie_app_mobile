@@ -4,6 +4,7 @@ const { createServer } = require("node:http");
 const { Server } = require("socket.io");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 const routes = require("./src/routes");
 
 const app = express();
@@ -16,12 +17,9 @@ const activeSockets = {};
 
 //Enabled CORS policies
 app.use(cors());
-// {
-//   origin: ['exp://192.168.1.7:8081'],
-//   methods: ['GET', 'POST'],
-// }
 //Enable express JSON middleware
-app.use(express.json());
+app.use(bodyParser.json({ limit: "10mb" }));
+app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 //Use routes
 app.use(baseUrl, routes);
 

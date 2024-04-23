@@ -11,7 +11,7 @@ const ChatNavigator = () => {
       <Stack.Screen
         name="Chat"
         component={Chat}
-        options={{ headerShown: false }}
+        options={{ title: "Đoạn chat" }}
       />
       <Stack.Screen
         name="Message"

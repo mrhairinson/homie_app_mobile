@@ -31,11 +31,6 @@ const AuthNavigator = () => {
         component={Verification}
         options={{ title: "Xác thực OTP" }}
       />
-      {/* <Stack.Screen
-        name="Search"
-        options={{ headerShown: false }}
-        component={Search}
-      /> */}
     </Stack.Navigator>
   );
 };

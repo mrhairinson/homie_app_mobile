@@ -55,26 +55,6 @@ const Map = ({ route }) => {
         </Mapbox.MapView>
       </View>
     </View>
-    // userLocation?.latitude && (
-    //   <View>
-    //     <MapView
-    //       style={styles.map}
-    //       region={{
-    //         latitude: userLocation?.latitude,
-    //         longitude: userLocation?.longitude,
-    //         latitudeDelta: 0.0421,
-    //         longitudeDelta: 0.0421,
-    //       }}
-    //     >
-    //       <Marker
-    //         coordinate={{
-    //           latitude: userLocation?.latitude,
-    //           longitude: userLocation?.longitude,
-    //         }}
-    //       ></Marker>
-    //     </MapView>
-    //   </View>
-    // )
   );
 };
 

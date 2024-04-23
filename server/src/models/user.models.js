@@ -18,6 +18,9 @@ const userSchema = new Schema(
     dob: {
       type: String,
     },
+    image: {
+      type: String,
+    },
   },
   {
     timestamps: true,

@@ -49,7 +49,7 @@ const updateUser = async (req, res) => {
       //Check the size of the image
       const image = req.body.image;
       const imageSizeInMB = getBinarySizeInMB(image);
-      console.log("Image size: " + imageSizeInMB);
+      // console.log("Image size: " + imageSizeInMB);
       if (imageSizeInMB > 1) {
         return res.status(400).json({
           errorCode: errorCode.LARGE_IMAGE_SIZE,

@@ -14,7 +14,7 @@ const {
 
 router.get("/", getAllPosts);
 router.get("/pagination", getPaginationPosts);
-router.get("/filter/:type", getFilterPosts);
+router.get("/filter", getFilterPosts);
 router.post("/create", authenticateToken, createPost);
 router.put("/update", authenticateToken, updatePost);
 router.delete("/delete", authenticateToken, deletePost);

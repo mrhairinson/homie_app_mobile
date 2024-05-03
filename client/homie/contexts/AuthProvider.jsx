@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { getChats } from "../apis";
+import { getAllPost } from "../apis";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -8,6 +9,16 @@ export const AuthProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
   const [chats, setChats] = useState([]);
   const [newMessage, setNewMessage] = useState(null);
+  const [posts, setPosts] = useState([]);
+
+  const fetchPost = async () => {
+    try {
+      const result = await getAllPost();
+      setPosts(result);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   useEffect(() => {
     //listen when the message is received
@@ -28,6 +39,10 @@ export const AuthProvider = ({ children }) => {
     }
   }, [newMessage, profile]);
 
+  useEffect(() => {
+    fetchPost();
+  }, []);
+
   return (
     <AuthContext.Provider
       value={{
@@ -39,6 +54,8 @@ export const AuthProvider = ({ children }) => {
         setSocket,
         chats,
         setChats,
+        posts,
+        setPosts,
       }}
     >
       {children}

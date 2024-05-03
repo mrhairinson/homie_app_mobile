@@ -7,7 +7,7 @@ import { useAuth } from "../contexts/AuthProvider";
 import { formatMoneyToVND } from "../utils";
 
 const Post = ({ post, navigateMap, navigateChat }) => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, profile } = useAuth();
   const [showDetail, setShowDetail] = useState(false);
   const images = [];
   return (
@@ -42,20 +42,27 @@ const Post = ({ post, navigateMap, navigateChat }) => {
 
       {/* Contact */}
       <View style={styles.contact}>
-        {isLoggedIn ? (
-          <Button
-            title="Nhắn tin"
-            onPress={() => {
-              navigateChat({
-                receiverId: post.ownerId,
-                receiverName: post.ownerName,
-              });
-            }}
-            color={COLOR.PRIMARY}
-          />
-        ) : (
-          <></>
-        )}
+        {isLoggedIn &&
+          (post.phoneNumber === profile.phoneNumber ? (
+            <>
+              <Button
+                title="Xóa bài viết"
+                onPress={() => console.log("Xóa")}
+                color={COLOR.ERROR}
+              />
+            </>
+          ) : (
+            <Button
+              title="Nhắn tin"
+              onPress={() => {
+                navigateChat({
+                  receiverId: post.ownerId,
+                  receiverName: post.ownerName,
+                });
+              }}
+              color={COLOR.PRIMARY}
+            />
+          ))}
         <Button
           title={`Gọi ${[post.phoneNumber]}`}
           onPress={() => console.log("Calling")}

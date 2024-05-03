@@ -1,1 +1,4 @@
-export const SERVER_URL = "http://192.168.1.122:8080";
+export const ROOM_TYPE = {
+  CLOSED: 0,
+  NOT_CLOSED: 1,
+};

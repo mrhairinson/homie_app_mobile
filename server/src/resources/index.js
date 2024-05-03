@@ -11,6 +11,7 @@ const errorCode = {
   INVALID_PASSWORD: "e009",
   WRONG_PASSWORD: "e010",
   LARGE_IMAGE_SIZE: "e011",
+  MIN_MAX_ERROR: "e012",
 };
 
 const errorMessage = {
@@ -25,6 +26,12 @@ const errorMessage = {
   INVALID_PASSWORD: "Password is invalid",
   WRONG_PASSWORD: "Wrong pasword",
   LARGE_IMAGE_SIZE: "Image size is to large (> 1mb)",
+  MIN_MAX_ERROR: "Min value is not higher than max value",
 };
 
-module.exports = { errorCode, errorMessage };
+const ROOM_TYPE = {
+  CLOSED: 0,
+  NOT_CLOSED: 1,
+};
+
+module.exports = { errorCode, errorMessage, ROOM_TYPE };

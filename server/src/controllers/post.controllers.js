@@ -25,12 +25,37 @@ const getAllPosts = async (req, res) => {
 
 const getFilterPosts = async (req, res) => {
   try {
-    const { type } = req.params;
-    console.log(type);
+    const filter = req.query;
+    if (filter.roomPrice) {
+      const priceRange = filter.roomPrice;
+      const minValue = Number(priceRange.split("+")[0]);
+      const maxValue = Number(priceRange.split("+")[1]);
+      if (minValue > maxValue) {
+        return res.status(400).json({
+          errorCode: errorCode.MIN_MAX_ERROR,
+          message: errorMessage.MIN_MAX_ERROR,
+        });
+      }
+      filter.roomPrice = { $gte: minValue, $lte: maxValue };
+    }
+    if (filter.roomArea) {
+      const priceRange = filter.roomArea;
+      const minValue = Number(priceRange.split("+")[0]);
+      const maxValue = Number(priceRange.split("+")[1]);
+      if (minValue > maxValue) {
+        return res.status(400).json({
+          errorCode: errorCode.MIN_MAX_ERROR,
+          message: errorMessage.MIN_MAX_ERROR,
+        });
+      }
+      filter.roomArea = { $gte: minValue, $lte: maxValue };
+    }
+    const posts = await Post.find(filter);
     return res.status(200).send({
+      errorCode: errorCode.SUCCESS,
       message: "Get filter posts successfully",
-      count: 11,
-      data: [],
+      count: posts.length,
+      data: posts,
     });
   } catch (error) {
     return res.status(500).send({
@@ -80,11 +105,11 @@ const createPost = async (req, res) => {
     const {
       postName,
       location,
-      longitude,
-      latitude,
+      city,
+      district,
       roomDescription,
       roomArea,
-      roomType,
+      isClosed,
       roomPrice,
       roomPriceElectricity,
       roomPriceWater,
@@ -100,11 +125,11 @@ const createPost = async (req, res) => {
       phoneNumber: phoneNumber,
       postName: postName,
       location: location,
-      longitude: longitude,
-      latitude: latitude,
+      city: city,
+      district: district,
       roomDescription: roomDescription,
       roomArea: roomArea,
-      roomType: roomType,
+      isClosed: isClosed,
       roomPrice: roomPrice,
       roomPriceElectricity: roomPriceElectricity,
       roomPriceWater: roomPriceWater,

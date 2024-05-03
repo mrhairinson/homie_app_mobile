@@ -17,6 +17,24 @@ export const getAllPost = async () => {
   }
 };
 
+// Lấy danh sách bài đăng has filter
+export const getFilterPosts = async (filterObj) => {
+  try {
+    let response;
+    if (Object.keys(filterObj).length !== 0) {
+      response = await axios.get(`${baseUrl}/post/filter`, {
+        params: filterObj,
+      });
+    } else {
+      response = await axios.get(`${baseUrl}/post/filter`);
+    }
+    return response.data;
+  } catch (error) {
+    console.error("Error fetch data: ", error);
+    return error.response.data;
+  }
+};
+
 //Đăng kí
 export const signup = async (phoneNumber, password) => {
   try {

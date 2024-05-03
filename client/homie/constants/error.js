@@ -10,6 +10,7 @@ export const ERROR_MESSAGE = {
   e009: "Mật khẩu không hợp lệ (Lớn hơn 6 lý tự, không chứa ký tự đặc biệt)",
   e010: "Sai mật khẩu",
   e011: "Dung lượng ảnh không quá 1MB",
+  e012: "Min value không được lớn hơn Max value",
 };
 
 export const SUCCESS_CODE = "e000";

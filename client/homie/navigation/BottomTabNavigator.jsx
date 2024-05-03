@@ -9,6 +9,7 @@ import Map from "../screens/Map";
 import Profile from "../screens/profile/Profile";
 import ChatNavigator from "./ChatNavigator";
 import AuthNavigator from "./AuthNavigator";
+import SearchNavigator from "./SearchNavigator";
 import { useAuth } from "../contexts/AuthProvider";
 
 const Tab = createBottomTabNavigator();
@@ -26,7 +27,7 @@ const BottomTabNavigator = () => {
     >
       <Tab.Screen
         name="Search"
-        component={Search}
+        component={SearchNavigator}
         unmountOnBlur={true}
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -79,7 +80,8 @@ const getTabbarVisibility = (route) => {
     routeName === "Signup" ||
     routeName === "Verification" ||
     routeName === "Signin" ||
-    routeName === "Message"
+    routeName === "Message" ||
+    routeName === "FilterScreen"
   ) {
     return "none";
   }

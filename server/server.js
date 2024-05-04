@@ -16,7 +16,9 @@ const mongodbUri = process.env.MONGODB_URI;
 const activeSockets = {};
 
 //Enabled CORS policies
-app.use(cors());
+app.use(
+  cors({ origin: "*", methods: ["GET", "POST", "PUT", "PATCH", "DELETE"] })
+);
 //Enable express JSON middleware
 app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));

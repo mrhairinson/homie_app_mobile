@@ -62,17 +62,15 @@ const getBinarySizeInMB = (base64Str) => {
   return binaryData.length / (1024 * 1024);
 };
 
-const uploadImageToAWS = async (imageBuffer) => {
+const uploadSingleImageToAWS = async (file) => {
   const params = {
-    Body: Buffer.from(imageBuffer, "base64"),
+    Body: file.buffer,
     Bucket: process.env.AWS_BUCKET_NAME,
-    Key: `${uuidv4().split("-").join("")}.png`,
-    ContentType: "image/png",
+    Key: `uploads/${file.originalname}`,
   };
   try {
     const command = new PutObjectCommand(params);
     const data = await client.send(command);
-    console.log("Successfully uploaded image:", data);
     return data;
   } catch (error) {
     console.error("Error uploading image:", error);
@@ -85,5 +83,5 @@ module.exports = {
   hashPassword,
   comparePasswords,
   getBinarySizeInMB,
-  uploadImageToAWS,
+  uploadSingleImageToAWS,
 };

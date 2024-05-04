@@ -78,21 +78,24 @@ export const signin = async (phoneNumber, password) => {
 };
 
 //Sửa thông tin người dùng
-export const updateUser = async (updateObj, id) => {
+export const updateUser = async (formData, id) => {
   try {
     const jwtToken = await getJwtToken();
-    console.log(jwtToken);
     const headers = {
+      Accept: "application/json",
+      "Content-Type": "multipart/form-data",
       authorization: `Bearer ${jwtToken}`,
     };
-    const response = await axios.patch(
+    console.log(formData);
+    const response = await axios.post(
       `${baseUrl}/user/update/${id}`,
-      updateObj,
-      { headers }
+      formData,
+      { headers: headers }
     );
     return response.data;
   } catch (error) {
-    return error.response.data;
+    console.log(error);
+    return error.response;
   }
 };
 

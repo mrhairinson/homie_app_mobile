@@ -28,6 +28,7 @@ const Profile = () => {
   const [name, setName] = useState(null);
   const [dob, setDob] = useState(null);
   const [image, setImage] = useState(null);
+  const [file, setFile] = useState(null);
 
   useEffect(() => {
     setName(profile.name);
@@ -50,10 +51,17 @@ const Profile = () => {
   };
 
   const handleUpdateProfile = async () => {
-    let res = await updateUser({ name, dob, image }, profile._id);
-    console.log(res);
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("dob", dob);
+    formData.append("image", {
+      name: file.fileName,
+      uri: file.uri,
+      type: file.mimeType,
+    });
+    let res = await updateUser(formData, profile._id);
     if (res.errorCode === SUCCESS_CODE) {
-      setProfile({ ...profile, name: name, dob: dob, image: image });
+      setProfile(res.data);
       Alert.alert("Thông báo", "Cập nhật thông tin thành công");
       setIsUpdate(!isUpdate);
     } else {
@@ -66,13 +74,11 @@ const Profile = () => {
       await ImagePicker.requestCameraPermissionsAsync();
       let result = await ImagePicker.launchCameraAsync({
         cameraType: ImagePicker.CameraType.front,
-        allowsEditing: true,
         aspect: [1, 1],
-        quality: 0.5,
-        base64: true,
+        // base64: true,
       });
       if (!result.canceled) {
-        changeImage("data:image/png;base64," + result.assets[0].base64);
+        changeImage(result.assets[0]);
       }
     } catch (error) {
       console.log("Camera error:", error);
@@ -83,13 +89,12 @@ const Profile = () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
       aspect: [1, 1],
-      quality: 0.5,
-      base64: true,
+      // base64: true,
     });
+    // console.log(result.assets[0]);
     if (!result.canceled) {
-      changeImage("data:image/png;base64," + result.assets[0].base64);
+      changeImage(result.assets[0]);
     }
   };
 
@@ -97,8 +102,9 @@ const Profile = () => {
     changeImage(null);
   };
 
-  const changeImage = (newImage) => {
-    setImage(newImage);
+  const changeImage = (file) => {
+    setImage(file.uri);
+    setFile(file);
   };
 
   return (

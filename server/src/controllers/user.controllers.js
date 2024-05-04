@@ -1,7 +1,7 @@
 const { User } = require("../models/user.models");
 const { Post } = require("../models/post.models");
 const { errorCode, errorMessage } = require("../resources/index");
-const { getBinarySizeInMB } = require("../helpers/index");
+const { uploadSingleImageToAWS } = require("../helpers/index");
 
 const getUser = async (req, res) => {
   try {
@@ -44,20 +44,14 @@ const getUserPosts = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
+    console.log("update");
     const userId = req.params.id;
-    if (req.body.image) {
-      //Check the size of the image
-      const image = req.body.image;
-      const imageSizeInMB = getBinarySizeInMB(image);
-      // console.log("Image size: " + imageSizeInMB);
-      if (imageSizeInMB > 1) {
-        return res.status(400).json({
-          errorCode: errorCode.LARGE_IMAGE_SIZE,
-          message: errorMessage.LARGE_IMAGE_SIZE,
-        });
-      }
-    }
-    const user = await User.findOneAndUpdate({ _id: userId }, req.body, {
+    let updatedUser = req.body;
+    let file = req.files[0];
+    file.originalname = `${crypto.randomUUID()}${file.originalname}`;
+    await uploadSingleImageToAWS(file);
+    updatedUser.image = `https://homiebucket2.s3.ap-southeast-2.amazonaws.com/uploads/${file.originalname}`;
+    const user = await User.findOneAndUpdate({ _id: userId }, updatedUser, {
       new: true,
     });
     return res.status(201).json({
@@ -66,6 +60,7 @@ const updateUser = async (req, res) => {
       data: user,
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       errorCode: errorCode.INTERNAL_SERVER_ERROR,
       message: error.message,

@@ -81,7 +81,8 @@ const getTabbarVisibility = (route) => {
     routeName === "Verification" ||
     routeName === "Signin" ||
     routeName === "Message" ||
-    routeName === "FilterScreen"
+    routeName === "FilterScreen" ||
+    routeName === "CreatePost"
   ) {
     return "none";
   }

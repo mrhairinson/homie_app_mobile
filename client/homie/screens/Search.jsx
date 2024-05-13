@@ -12,14 +12,15 @@ import React, { useEffect, useState } from "react";
 import Post from "../components/Post";
 import { getAllPost, getUserLocation } from "../apis";
 import { useLocation } from "../contexts/UserLocationProvider";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
 import COLOR from "../constants/color";
 import { useAuth } from "../contexts/AuthProvider";
 
 const Search = ({ navigation }) => {
   const [address, setAddress] = useState(null);
   const { userLocation, setUserLocation } = useLocation();
-  const { isLoggedIn, posts } = useAuth();
+  const { isLoggedIn, posts, setPosts } = useAuth();
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -59,8 +60,24 @@ const Search = ({ navigation }) => {
     });
   };
 
+  const refreshList = async () => {
+    try {
+      setIsRefreshing(true);
+      const result = await getAllPost();
+      setPosts(result);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
   const filterPost = () => {
     navigation.navigate("FilterScreen");
+  };
+
+  const createPost = () => {
+    navigation.navigate("CreatePost");
   };
   return (
     <View style={styles.container}>
@@ -84,10 +101,12 @@ const Search = ({ navigation }) => {
             navigateChat={navigateToChat}
           />
         )}
+        refreshing={isRefreshing}
+        onRefresh={refreshList}
       />
       {isLoggedIn && (
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Add</Text>
+        <TouchableOpacity style={styles.button} onPress={createPost}>
+          <FontAwesome6 name="add" size={28} color={COLOR.WHITE} />
         </TouchableOpacity>
       )}
     </View>
@@ -97,7 +116,7 @@ const Search = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     paddingTop: 10,
-    paddingBottom: 25,
+    height: "100%",
   },
   header: {
     display: "flex",
@@ -113,12 +132,12 @@ const styles = StyleSheet.create({
   },
   button: {
     position: "absolute",
-    bottom: 50,
+    bottom: 20,
     right: 20,
-    backgroundColor: "blue",
+    backgroundColor: COLOR.PRIMARY,
     paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 50,
+    paddingHorizontal: 12,
+    borderRadius: 80,
   },
   buttonText: {
     color: "white",

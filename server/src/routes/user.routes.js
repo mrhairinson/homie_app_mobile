@@ -2,8 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const { authenticateToken } = require("../middlewares/index");
-const uploadSingle = require("../middlewares/multerMiddleware");
-
+const uploadFile = require("../middlewares/multerMiddleware");
 const {
   getUser,
   getUserPosts,
@@ -12,6 +11,6 @@ const {
 
 router.get("/:id", getUser);
 router.get("/posts", authenticateToken, getUserPosts);
-router.post("/update/:id", authenticateToken, uploadSingle, updateUser);
+router.post("/update/:id", authenticateToken, uploadFile, updateUser);
 
 module.exports = router;

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { getChats } from "../apis";
-import { getAllPost } from "../apis";
+import { getAllPost, getAllCities } from "../apis";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -10,11 +10,21 @@ export const AuthProvider = ({ children }) => {
   const [chats, setChats] = useState([]);
   const [newMessage, setNewMessage] = useState(null);
   const [posts, setPosts] = useState([]);
+  const [cities, setCities] = useState([]);
 
   const fetchPost = async () => {
     try {
       const result = await getAllPost();
       setPosts(result);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const fetchCities = async () => {
+    try {
+      const result = await getAllCities();
+      setCities(result);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -41,6 +51,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     fetchPost();
+    fetchCities();
   }, []);
 
   return (
@@ -56,6 +67,8 @@ export const AuthProvider = ({ children }) => {
         setChats,
         posts,
         setPosts,
+        cities,
+        setCities,
       }}
     >
       {children}

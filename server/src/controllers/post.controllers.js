@@ -1,5 +1,6 @@
 const { Post } = require("../models/post.models");
 const { errorCode, errorMessage } = require("../resources/index");
+const { uploadSingleImageToAWS } = require("../helpers/index");
 
 /**
  * Handle get all posts
@@ -19,6 +20,25 @@ const getAllPosts = async (req, res) => {
     return res.status(500).send({
       errorCode: errorCode.INTERNAL_SERVER_ERROR,
       message: error,
+    });
+  }
+};
+
+//Get post by userId
+const getUserPosts = async (req, res) => {
+  try {
+    const ownerId = req.params.userId;
+    const posts = await Post.find({ ownerId: ownerId });
+    return res.status(200).json({
+      errorCode: errorCode.SUCCESS,
+      message: "Get user's posts successfully",
+      data: posts,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: error,
+      errorCode: errorCode.INTERNAL_SERVER_ERROR,
     });
   }
 };
@@ -102,51 +122,70 @@ const createPost = async (req, res) => {
   try {
     //Get phoneNumber
     const phoneNumber = req.phoneNumber;
-    const {
-      postName,
-      location,
-      city,
-      district,
-      roomDescription,
-      roomArea,
-      isClosed,
-      roomPrice,
-      roomPriceElectricity,
-      roomPriceWater,
-      roomPriceInternet,
-      roomPriceCleaning,
-      hasAirConditional,
-      hasHeater,
-      image,
-      ownerId,
-      ownerName,
-    } = req.body;
-    const post = new Post({
-      phoneNumber: phoneNumber,
-      postName: postName,
-      location: location,
-      city: city,
-      district: district,
-      roomDescription: roomDescription,
-      roomArea: roomArea,
-      isClosed: isClosed,
-      roomPrice: roomPrice,
-      roomPriceElectricity: roomPriceElectricity,
-      roomPriceWater: roomPriceWater,
-      roomPriceInternet: roomPriceInternet,
-      roomPriceCleaning: roomPriceCleaning,
-      hasAirConditional: hasAirConditional,
-      hasHeater: hasHeater,
-      image: image,
-      ownerId: ownerId,
-      ownerName: ownerName,
-    });
+    // const {
+    //   postName,
+    //   location,
+    //   city,
+    //   district,
+    //   roomDescription,
+    //   roomArea,
+    //   isClosed,
+    //   roomPrice,
+    //   roomPriceElectricity,
+    //   roomPriceWater,
+    //   roomPriceInternet,
+    //   roomPriceCleaning,
+    //   hasAirConditional,
+    //   hasHeater,
+    //   image,
+    //   ownerId,
+    //   ownerName,
+    // } = req.body;
+    // const post = new Post({
+    //   phoneNumber: phoneNumber,
+    //   postName: postName,
+    //   location: location,
+    //   city: city,
+    //   district: district,
+    //   roomDescription: roomDescription,
+    //   roomArea: roomArea,
+    //   isClosed: isClosed,
+    //   roomPrice: roomPrice,
+    //   roomPriceElectricity: roomPriceElectricity,
+    //   roomPriceWater: roomPriceWater,
+    //   roomPriceInternet: roomPriceInternet,
+    //   roomPriceCleaning: roomPriceCleaning,
+    //   hasAirConditional: hasAirConditional,
+    //   hasHeater: hasHeater,
+    //   image: image,
+    //   ownerId: ownerId,
+    //   ownerName: ownerName,
+    // });
+    const newPost = req.body;
+    newPost.phoneNumber = phoneNumber;
+    const images = req.files;
+    //Xu ly images
+    if (images.length !== 0) {
+      let imageLs = new Array();
+      for (const file of images) {
+        file.originalname = `${crypto.randomUUID()}${file.originalname}`;
+        await uploadSingleImageToAWS(file);
+        let fileName = `https://homiebucket2.s3.ap-southeast-2.amazonaws.com/uploads/${file.originalname}`;
+        imageLs.push(fileName);
+      }
+      newPost.image = imageLs;
+    } else {
+      newPost.image = null;
+    }
+    const post = new Post(newPost);
     const result = await post.save();
     return res.status(201).json({
+      errorCode: errorCode.SUCCESS,
       message: "Post created successfully!",
-      data: post,
+      data: result,
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       errorCode: errorCode.INTERNAL_SERVER_ERROR,
       message: error,
@@ -179,15 +218,16 @@ const updatePost = async (req, res) => {
  */
 const deletePost = async (req, res) => {
   try {
-    const id = req.body.id; // Extract the _id from the request parameters
+    const id = req.params.id; // Extract the _id from the request parameters
     const phoneNumber = req.phoneNumber;
     const post = await Post.findOne({ _id: id });
     if (post.phoneNumber === phoneNumber) {
       const result = await Post.deleteOne({ _id: id });
       if (result.deletedCount === 1) {
         return res.status(200).json({
+          errorCode: errorCode.SUCCESS,
           message: "Document deleted successfully",
-          data: id,
+          data: result,
         });
       } else {
         return res.status(404).json({
@@ -215,4 +255,5 @@ module.exports = {
   updatePost,
   deletePost,
   getFilterPosts,
+  getUserPosts,
 };

@@ -11,9 +11,80 @@ const accessToken = MAP_BOX_PUBLIC_KEY;
 export const getAllPost = async () => {
   try {
     const response = await axios.get(`${baseUrl}/post`);
+    return response.data.data.reverse();
+  } catch (error) {
+    console.error("Error fetch data: ", error);
+  }
+};
+
+// Lấy danh sách các thành phố
+export const getAllCities = async () => {
+  try {
+    const response = await axios.get(`${baseUrl}/cities`);
     return response.data.data;
   } catch (error) {
     console.error("Error fetch data: ", error);
+  }
+};
+
+// Lấy danh sách các quận theo thành phố
+export const getDistricts = async (cityId) => {
+  try {
+    const response = await axios.get(`${baseUrl}/districts/${cityId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetch data: ", error);
+  }
+};
+
+// Thêm bài đăng
+
+export const createPost = async (postData) => {
+  try {
+    const jwtToken = await getJwtToken();
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "multipart/form-data",
+      authorization: `Bearer ${jwtToken}`,
+    };
+    const response = await axios.post(`${baseUrl}/post/create`, postData, {
+      headers: headers,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetch data: ", error);
+    return error.response;
+  }
+};
+
+//Delete Post by  param
+export const deletePost = async (postId) => {
+  try {
+    console.log("id: ", postId);
+    const jwtToken = await getJwtToken();
+    const headers = {
+      authorization: `Bearer ${jwtToken}`,
+    };
+    const response = await axios.delete(`${baseUrl}/post/delete/${postId}`, {
+      headers: headers,
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetch data: ", error);
+    console.log(error);
+    return error.response.data;
+  }
+};
+
+//get all post of an user
+export const getPostsOfUser = async (userId) => {
+  try {
+    const response = await axios.get(`${baseUrl}/post/user/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetch data: ", error);
+    return error.response.data;
   }
 };
 

@@ -1,31 +1,50 @@
-import { View, Text, StyleSheet, Button, Image, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  Image,
+  Pressable,
+  Alert,
+} from "react-native";
 import Carousel from "pinar";
 import React, { useState } from "react";
 import COLOR from "../constants/color";
 import { Ionicons, MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 import { useAuth } from "../contexts/AuthProvider";
 import { formatMoneyToVND } from "../utils";
+import { deletePost, getAllPost } from "../apis";
 
 const Post = ({ post, navigateMap, navigateChat }) => {
-  const { isLoggedIn, profile } = useAuth();
+  const { isLoggedIn, profile, setPosts } = useAuth();
   const [showDetail, setShowDetail] = useState(false);
-  const images = [];
+
+  const handleDeletePost = async (postId) => {
+    try {
+      await deletePost(postId);
+      //Refresh list
+      Alert.alert("Thông báo", "Xóa bài thành công!");
+      const response = await getAllPost();
+      setPosts(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       {/* Image  */}
       <Carousel height={200} showsControls={false}>
-        <Image
-          style={styles.image}
-          source={require("../assets/images/room-default.jpg")}
-        />
-        <Image
-          style={styles.image}
-          source={require("../assets/images/room-default.jpg")}
-        />
-        <Image
-          style={styles.image}
-          source={require("../assets/images/room-default.jpg")}
-        />
+        {post.image ? (
+          post?.image?.map((item) => (
+            <Image key={item} style={styles.image} source={{ uri: item }} />
+          ))
+        ) : (
+          <Image
+            style={styles.image}
+            source={require("../assets/images/room-default.jpg")}
+          />
+        )}
       </Carousel>
 
       {/* Name  */}
@@ -46,8 +65,8 @@ const Post = ({ post, navigateMap, navigateChat }) => {
           (post.phoneNumber === profile.phoneNumber ? (
             <>
               <Button
-                title="Xóa bài viết"
-                onPress={() => console.log("Xóa")}
+                title="Xóa bài đăng"
+                onPress={() => handleDeletePost(post["_id"])}
                 color={COLOR.ERROR}
               />
             </>
@@ -63,11 +82,13 @@ const Post = ({ post, navigateMap, navigateChat }) => {
               color={COLOR.PRIMARY}
             />
           ))}
-        <Button
-          title={`Gọi ${[post.phoneNumber]}`}
-          onPress={() => console.log("Calling")}
-          color={COLOR.PRIMARY}
-        />
+        {(!isLoggedIn || post.phoneNumber !== profile.phoneNumber) && (
+          <Button
+            title={`Gọi ${[post.phoneNumber]}`}
+            onPress={() => console.log("Calling")}
+            color={COLOR.PRIMARY}
+          />
+        )}
       </View>
       {/* Show the detail Post*/}
       {showDetail && (
@@ -130,9 +151,9 @@ const styles = StyleSheet.create({
     height: "auto",
   },
   postName: {
-    marginVertical: 10,
+    marginBottom: 10,
     color: COLOR.BLACK,
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: "bold",
   },
   contact: {

@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
 import CheckBox from "../components/CheckBox";
 import { useAuth } from "../contexts/AuthProvider";
-import { getFilterPosts } from "../apis";
+import { getFilterPosts, getDistricts, getPostsOfUser } from "../apis";
 import { SUCCESS_CODE, ERROR_MESSAGE } from "../constants/error";
+import DropDown from "../components/DropDown";
 
-const Filter = () => {
-  const { isLoggedIn, setPosts, posts } = useAuth();
-  const [city, setCity] = useState("");
-  const [district, setDistrict] = useState("");
+const Filter = ({ navigation }) => {
+  const { isLoggedIn, setPosts, cities, profile } = useAuth();
+  const [city, setCity] = useState({});
+  const [district, setDistrict] = useState({});
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [minArea, setMinArea] = useState("");
@@ -17,42 +18,78 @@ const Filter = () => {
   const [heater, setHeater] = useState(false);
   const [closed, setClosed] = useState(false);
   const [onlyUserPost, setOnlyUserPost] = useState(false);
+  const [districtList, setDistrictList] = useState([]);
 
-  const handleSearch = async () => {
-    //Tạo query Object
-    let query = {};
-    if (city !== "") query.city = city;
-    if (district !== "") query.district = district;
-    if (minPrice !== "" && maxPrice !== "")
-      query.roomPrice = `${minPrice}+${maxPrice}`;
-    if (minArea !== "" && maxArea !== "")
-      query.roomPrice = `${minPrice}+${maxPrice}`;
-    if (airConditioner) query.hasAirConditional = true;
-    if (heater) query.hasHeater = true;
-    if (closed) query.isClosed = true;
-    //Gọi API
-    let responses = await getFilterPosts(query);
+  const handleChangeCities = async (cityItem) => {
+    setCity(cityItem);
+    setDistrict({});
+    //get district by city._id
+    let responses = await getDistricts(cityItem._id);
     if (responses.errorCode === SUCCESS_CODE) {
-      setPosts(responses.data);
+      setDistrictList(responses.data);
     } else {
       Alert.alert("Thông báo", ERROR_MESSAGE[responses.errorCode]);
     }
   };
 
+  const handleChangeDistrict = (districtItem) => {
+    setDistrict(districtItem);
+  };
+
+  const handleSearch = async () => {
+    //Tạo query Object
+    if (onlyUserPost) {
+      //Gọi API
+      let responses = await getPostsOfUser(profile["_id"]);
+      if (responses.errorCode === SUCCESS_CODE) {
+        setPosts(responses.data);
+        navigation.navigate("SearchScreen");
+      } else {
+        Alert.alert("Thông báo", ERROR_MESSAGE[responses.errorCode]);
+      }
+    } else {
+      let query = {};
+      if (Object.keys(city).length !== 0) query.city = city.name;
+      if (Object.keys(district).length !== 0) query.district = district.name;
+      if (minPrice !== "" && maxPrice !== "")
+        query.roomPrice = `${minPrice}+${maxPrice}`;
+      if (minArea !== "" && maxArea !== "")
+        query.roomPrice = `${minPrice}+${maxPrice}`;
+      if (airConditioner) query.hasAirConditional = true;
+      if (heater) query.hasHeater = true;
+      if (closed) query.isClosed = true;
+      //Gọi API
+      let responses = await getFilterPosts(query);
+      if (responses.errorCode === SUCCESS_CODE) {
+        setPosts(responses.data);
+        navigation.navigate("SearchScreen");
+      } else {
+        Alert.alert("Thông báo", ERROR_MESSAGE[responses.errorCode]);
+      }
+    }
+  };
+
   return (
     <View style={styles.container}>
-      {/* <Text style={styles.heading}>Tìm kiếm phòng trọ</Text> */}
-      <TextInput
-        style={styles.input}
-        placeholder="Tỉnh/Thành phố"
-        value={city}
-        onChangeText={(text) => setCity(text)}
+      <DropDown
+        inputLabel="Thành phố"
+        materialCommunityIcons="city-variant-outline"
+        data={cities}
+        mapLabel="name"
+        mapValue="_id"
+        onValueChange={handleChangeCities}
+        isDisabled={false}
+        initVal={city.name}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Quận/Huyện"
-        value={district}
-        onChangeText={(text) => setDistrict(text)}
+      <DropDown
+        inputLabel="Quận/Huyện"
+        materialCommunityIcons="home-city-outline"
+        data={districtList}
+        mapLabel="name"
+        mapValue="_id"
+        onValueChange={handleChangeDistrict}
+        isDisabled={Object.keys(city).length === 0}
+        initVal={district.name}
       />
       <View style={styles.priceAreaContainer}>
         <TextInput
@@ -142,11 +179,12 @@ const styles = StyleSheet.create({
   },
   halfInput: {
     flex: 1,
-    marginRight: 10,
+    // marginRight: 10,
   },
   priceAreaContainer: {
     flexDirection: "row",
     marginBottom: 10,
+    gap: 10,
   },
   checkBoxContainer: {
     flexDirection: "row",

@@ -29,6 +29,7 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({ storage, fileFilter, limits: { fileSize: 1000000 } });
 
 // Middleware function to handle single file upload
-const uploadSingle = upload.any();
+// const uploadFile = upload.any();
+const uploadFile = upload.array("image", 5);
 
-module.exports = uploadSingle;
+module.exports = uploadFile;

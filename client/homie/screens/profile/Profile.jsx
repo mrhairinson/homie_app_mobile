@@ -54,11 +54,12 @@ const Profile = () => {
     const formData = new FormData();
     formData.append("name", name);
     formData.append("dob", dob);
-    formData.append("image", {
-      name: file.fileName,
-      uri: file.uri,
-      type: file.mimeType,
-    });
+    file &&
+      formData.append("image", {
+        name: file.fileName,
+        uri: file.uri,
+        type: file.mimeType,
+      });
     let res = await updateUser(formData, profile._id);
     if (res.errorCode === SUCCESS_CODE) {
       setProfile(res.data);

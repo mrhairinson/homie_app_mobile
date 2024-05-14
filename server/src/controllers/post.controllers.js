@@ -122,45 +122,6 @@ const createPost = async (req, res) => {
   try {
     //Get phoneNumber
     const phoneNumber = req.phoneNumber;
-    // const {
-    //   postName,
-    //   location,
-    //   city,
-    //   district,
-    //   roomDescription,
-    //   roomArea,
-    //   isClosed,
-    //   roomPrice,
-    //   roomPriceElectricity,
-    //   roomPriceWater,
-    //   roomPriceInternet,
-    //   roomPriceCleaning,
-    //   hasAirConditional,
-    //   hasHeater,
-    //   image,
-    //   ownerId,
-    //   ownerName,
-    // } = req.body;
-    // const post = new Post({
-    //   phoneNumber: phoneNumber,
-    //   postName: postName,
-    //   location: location,
-    //   city: city,
-    //   district: district,
-    //   roomDescription: roomDescription,
-    //   roomArea: roomArea,
-    //   isClosed: isClosed,
-    //   roomPrice: roomPrice,
-    //   roomPriceElectricity: roomPriceElectricity,
-    //   roomPriceWater: roomPriceWater,
-    //   roomPriceInternet: roomPriceInternet,
-    //   roomPriceCleaning: roomPriceCleaning,
-    //   hasAirConditional: hasAirConditional,
-    //   hasHeater: hasHeater,
-    //   image: image,
-    //   ownerId: ownerId,
-    //   ownerName: ownerName,
-    // });
     const newPost = req.body;
     newPost.phoneNumber = phoneNumber;
     const images = req.files;

@@ -6,18 +6,6 @@
 
 # Author: Nguyen Ba Hai - 20194753 - HUST
 
-### .evn file
-
-PORT=8080
-
-BASE_URL=/api/v1
-
-MONGODB_URI=mongodb+srv://nguyenbahai12122001:cOGoAK0pNnGmAxIr@homie.ido7aih.mongodb.net/?retryWrites=true&w=majority&appName=Homie
-
-JWT_SECRET_KEY=HJDUDHSIDejhfefHEjk
-
-###
-
 ### Run Server
 
 # Clone project
@@ -29,3 +17,7 @@ JWT_SECRET_KEY=HJDUDHSIDejhfefHEjk
 # run: npm run dev
 
 ### Run Client
+
+# run: npm install
+
+# run: npx expo start --dev-client

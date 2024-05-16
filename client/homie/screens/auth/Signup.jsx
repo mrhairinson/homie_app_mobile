@@ -18,11 +18,11 @@ const Signup = ({ navigation }) => {
 
   const handleSignUp = async () => {
     // Xử lý logic đăng ký ở đây, chẳng hạn như gửi mã xác nhận
-    const { errorCode } = await signup(phoneNumber, password);
-    console.log(errorCode);
+    const { errorCode, data } = await signup(phoneNumber, password);
     errorCode === SUCCESS_CODE
       ? navigation.navigate("Verification", {
           phoneNumber: phoneNumber,
+          otpNumber: data.otpNumber,
         })
       : Alert.alert("Thông báo", ERROR_MESSAGE[errorCode]);
   };

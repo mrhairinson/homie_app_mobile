@@ -1,17 +1,16 @@
 import React, { useState } from "react";
-import { View, TextInput, Button, StyleSheet, Alert } from "react-native";
+import { View, TextInput, Button, StyleSheet, Alert, Text } from "react-native";
 import { verify } from "../../apis";
 import { ERROR_MESSAGE, SUCCESS_CODE } from "../../constants/error";
 
 const Verification = ({ route, navigation }) => {
-  const { phoneNumber } = route.params;
+  const { phoneNumber, otpNumber } = route.params;
 
   const [otp, setOTP] = useState("");
 
   const handleVerifyOTP = async () => {
     // Xử lý logic xác thực OTP ở đây
     const { errorCode } = await verify(phoneNumber, otp);
-    console.log(errorCode);
     if (errorCode === SUCCESS_CODE) {
       Alert.alert("Thông báo", "Xác thực thành công.");
       navigation.navigate("Signin");
@@ -21,9 +20,12 @@ const Verification = ({ route, navigation }) => {
   };
   return (
     <View style={styles.container}>
+      <View>
+        <Text style={styles.title}>Mã xác thực của bạn là: {otpNumber}</Text>
+      </View>
       <TextInput
         style={styles.input}
-        placeholder="Nhập mã OTP 6 số"
+        placeholder="Nhập mã xác thực 6 số"
         onChangeText={(text) => setOTP(text)}
         value={otp}
         keyboardType="numeric"

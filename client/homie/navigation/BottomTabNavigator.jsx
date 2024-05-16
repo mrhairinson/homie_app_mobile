@@ -36,7 +36,7 @@ const BottomTabNavigator = () => {
           headerShown: false,
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Map"
         component={Map}
         unmountOnBlur={true}
@@ -46,7 +46,7 @@ const BottomTabNavigator = () => {
           ),
           headerShown: false,
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Chats"
         component={isLoggedIn ? ChatNavigator : AuthNavigator}

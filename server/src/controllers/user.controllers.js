@@ -44,7 +44,6 @@ const getUserPosts = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    console.log("update");
     const userId = req.params.id;
     let updatedUser = req.body;
     if (req.files) {

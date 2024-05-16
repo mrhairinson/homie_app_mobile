@@ -6,6 +6,8 @@ import {
   Image,
   Pressable,
   Alert,
+  Platform,
+  Linking,
 } from "react-native";
 import Carousel from "pinar";
 import React, { useState } from "react";
@@ -19,6 +21,14 @@ const Post = ({ post, navigateMap, navigateChat }) => {
   const { isLoggedIn, profile, setPosts } = useAuth();
   const [showDetail, setShowDetail] = useState(false);
 
+  const makePhoneCall = () => {
+    if (Platform.OS === "android") {
+      Linking.openURL(`tel:${post.phoneNumber}`);
+    } else {
+      Linking.openURL(`telprompt:${post.phoneNumber}`);
+    }
+  };
+
   const handleDeletePost = async (postId) => {
     try {
       await deletePost(postId);
@@ -29,6 +39,24 @@ const Post = ({ post, navigateMap, navigateChat }) => {
     } catch (error) {
       console.log(error);
     }
+  };
+  const showConfirmAlert = (postId) => {
+    Alert.alert(
+      "Xác nhận xóa bài",
+      "Bạn có chắc muốn xóa bài này không?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => handleDeletePost(postId),
+        },
+      ],
+      { cancelable: false }
+    );
   };
 
   return (
@@ -66,7 +94,7 @@ const Post = ({ post, navigateMap, navigateChat }) => {
             <>
               <Button
                 title="Xóa bài đăng"
-                onPress={() => handleDeletePost(post["_id"])}
+                onPress={() => showConfirmAlert(post["_id"])}
                 color={COLOR.ERROR}
               />
             </>
@@ -85,7 +113,7 @@ const Post = ({ post, navigateMap, navigateChat }) => {
         {(!isLoggedIn || post.phoneNumber !== profile.phoneNumber) && (
           <Button
             title={`Gọi ${[post.phoneNumber]}`}
-            onPress={() => console.log("Calling")}
+            onPress={makePhoneCall}
             color={COLOR.PRIMARY}
           />
         )}

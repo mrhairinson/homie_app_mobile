@@ -88,7 +88,7 @@ const sendingOtpSms = (phoneNumber, otpNumber) => {
   phoneNumber = formatPhoneNumber(phoneNumber);
   textflow.sendSMS(
     phoneNumber,
-    `Your OTP code for HOMiE is: ${otpNumber}`,
+    `Your OTP code for HOMiE is: ${otpNumber}. Hiệu lực 5 phút`,
     (result) => {
       if (result.ok) {
         console.log("SUCCESS");

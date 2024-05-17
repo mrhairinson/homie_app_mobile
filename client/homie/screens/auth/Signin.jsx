@@ -15,15 +15,19 @@ import { ERROR_MESSAGE, SUCCESS_CODE } from "../../constants/error";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import io from "socket.io-client";
 import { SERVER_URL } from "../../constants/resources";
+import LoadingOverlay from "../../components/LoadingOverlay";
 
 const Signin = ({ navigation }) => {
   const { setIsLoggedIn, setProfile, setSocket, setChats } = useAuth();
 
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
+    setLoading(true);
     let response = await signin(phoneNumber, password);
+    setLoading(false);
     if (response.errorCode === SUCCESS_CODE) {
       //Lưu data vào Async Storage
       try {
@@ -55,6 +59,7 @@ const Signin = ({ navigation }) => {
 
   return (
     <View>
+      <LoadingOverlay visible={loading} />
       <TextInput
         style={styles.input}
         placeholder="Nhập số điện thoại đã đăng kí"

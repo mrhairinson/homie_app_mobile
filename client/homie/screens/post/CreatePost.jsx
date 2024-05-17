@@ -17,6 +17,7 @@ import { useAuth } from "../../contexts/AuthProvider";
 import { createPost, getAllPost, getDistricts } from "../../apis";
 import { SUCCESS_CODE, ERROR_MESSAGE } from "../../constants/error";
 import DropDown from "../../components/DropDown";
+import LoadingOverlay from "../../components/LoadingOverlay";
 
 const CreatePost = ({ navigation }) => {
   const { profile, setPosts, cities } = useAuth();
@@ -36,8 +37,10 @@ const CreatePost = ({ navigation }) => {
   const [isClosed, setIsClosed] = useState(false);
   const [imageList, setImageList] = useState([]);
   const [districtList, setDistrictList] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handlePost = async () => {
+    setLoading(true);
     // Perform actions to post the data, e.g., send to server
     const formData = new FormData();
     formData.append("postName", postName);
@@ -65,6 +68,7 @@ const CreatePost = ({ navigation }) => {
       });
     });
     const res = await createPost(formData);
+    setLoading(false);
     if (res.errorCode === SUCCESS_CODE) {
       // setProfile(res.data);
       Alert.alert("Thông báo", "Thêm bài đăng thành công!");
@@ -138,6 +142,7 @@ const CreatePost = ({ navigation }) => {
   };
   return (
     <ScrollView style={styles.container}>
+      <LoadingOverlay visible={loading} />
       <TextInput
         style={styles.input}
         placeholder="Tên bài đăng"

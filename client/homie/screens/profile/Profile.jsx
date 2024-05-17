@@ -8,6 +8,7 @@ import {
   TextInput,
   ScrollView,
   Alert,
+  Modal,
 } from "react-native";
 import { useAuth } from "../../contexts/AuthProvider";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -17,10 +18,13 @@ import {
   MaterialIcons,
   FontAwesome,
   AntDesign,
+  Fontisto,
 } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { updateUser } from "../../apis";
 import { SUCCESS_CODE, ERROR_MESSAGE } from "../../constants/error";
+import DatePicker from "react-native-modern-datepicker";
+import moment from "moment";
 
 const Profile = () => {
   const { setIsLoggedIn, profile, setProfile, socket } = useAuth();
@@ -29,6 +33,7 @@ const Profile = () => {
   const [dob, setDob] = useState(null);
   const [image, setImage] = useState(null);
   const [file, setFile] = useState(null);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   useEffect(() => {
     setName(profile.name);
@@ -108,6 +113,20 @@ const Profile = () => {
     setFile(file);
   };
 
+  const handleConfirmDate = (date) => {
+    setDob(moment(date, "YYYY-MM-DD").format("DD/MM/YYYY"));
+    console.log(moment(date, "YYYY-MM-DD").format("DD/MM/YYYY"));
+    setDatePickerVisibility(false);
+  };
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
   return (
     <ScrollView style={styles.container}>
       {/* Header */}
@@ -180,7 +199,48 @@ const Profile = () => {
                 placeholder="Ngày tháng năm sinh"
                 onChangeText={(text) => setDob(text)}
                 value={dob}
+                editable={false}
               />
+              <TouchableOpacity
+                style={styles.dateInput}
+                onPress={showDatePicker}
+              >
+                <Text>Chọn ngày</Text>
+              </TouchableOpacity>
+              {/* <Text style={styles.text}>
+                Selected Date: {dob ? dob : "None"}
+              </Text> */}
+              <Modal
+                visible={isDatePickerVisible}
+                transparent={true}
+                animationType="slide"
+              >
+                <View style={styles.modalContainer}>
+                  <View style={styles.datePickerContainer}>
+                    <DatePicker
+                      mode="calendar"
+                      selected={dob}
+                      onDateChange={handleConfirmDate}
+                      options={{
+                        backgroundColor: "#fff",
+                        textHeaderColor: "#000",
+                        textDefaultColor: "#000",
+                        selectedTextColor: "#fff",
+                        mainColor: "#1e90ff",
+                        textSecondaryColor: "#000",
+                        borderColor: "rgba(122, 146, 165, 0.1)",
+                      }}
+                    />
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={hideDatePicker}
+                    >
+                      <Text style={styles.buttonText}>Cancel</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </Modal>
+
               <TouchableOpacity onPress={handleUpdateProfile}>
                 <Text style={styles.updateButton}>Cập nhật</Text>
               </TouchableOpacity>
@@ -278,7 +338,39 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingVertical: 8,
     textAlign: "center",
-    marginTop: 15,
+    marginTop: 40,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  datePickerContainer: {
+    backgroundColor: "white",
+    borderRadius: 10,
+    padding: 16,
+    width: 300,
+    alignItems: "center",
+  },
+  button: {
+    marginTop: 20,
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: "#1e90ff",
+  },
+  buttonText: {
+    color: "white",
+  },
+  dateInput: {
+    alignItems: "center",
+    height: 30,
+    justifyContent: "center",
+    borderColor: "black",
+    borderWidth: 1,
+    borderRadius: 5,
+    marginTop: 10,
+    marginHorizontal: 20,
   },
 });
 

@@ -3,6 +3,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { v4: uuidv4 } = require("uuid");
 const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+const textflow = require("textflow.js");
+textflow.useKey(process.env.TEXT_FLOW_API_KEY);
 
 // Assuming `config` contains your AWS credentials and other necessary configurations
 const config = {
@@ -77,6 +79,24 @@ const uploadSingleImageToAWS = async (file) => {
   }
 };
 
+const formatPhoneNumber = (phoneNumber) => {
+  const formattedPhoneNumber = `+84${phoneNumber.slice(1)}`;
+  return formattedPhoneNumber;
+};
+
+const sendingOtpSms = (phoneNumber, otpNumber) => {
+  phoneNumber = formatPhoneNumber(phoneNumber);
+  textflow.sendSMS(
+    phoneNumber,
+    `Your OTP code for HOMiE is: ${otpNumber}`,
+    (result) => {
+      if (result.ok) {
+        console.log("SUCCESS");
+      }
+    }
+  );
+};
+
 module.exports = {
   generateJwt,
   isValidPassword,
@@ -84,4 +104,5 @@ module.exports = {
   comparePasswords,
   getBinarySizeInMB,
   uploadSingleImageToAWS,
+  sendingOtpSms,
 };

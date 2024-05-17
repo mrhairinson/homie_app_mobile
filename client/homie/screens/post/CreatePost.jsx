@@ -69,10 +69,11 @@ const CreatePost = ({ navigation }) => {
       // setProfile(res.data);
       Alert.alert("Thông báo", "Thêm bài đăng thành công!");
       //Update post
-      let res = await getAllPost();
-      setPosts(res);
+      let result = await getAllPost();
+      setPosts(result);
       navigation.navigate("SearchScreen");
     } else {
+      console.log(res);
       Alert.alert("Lỗi", ERROR_MESSAGE[res.errorCode]);
     }
   };

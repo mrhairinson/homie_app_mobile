@@ -7,6 +7,7 @@ const {
   isValidPassword,
   hashPassword,
   comparePasswords,
+  sendingOtpSms,
 } = require("../helpers/index");
 
 /**
@@ -54,8 +55,7 @@ const signup = async (req, res) => {
     // Save otp to mongoose database
     const result = await otp.save();
     //Send OTP
-    console.log("Sending OTP...");
-    console.log("OTP sended!");
+    sendingOtpSms(phoneNumber, OTP);
     return res.status(201).json({
       errorCode: errorCode.SUCCESS,
       message: "OTP sended!",

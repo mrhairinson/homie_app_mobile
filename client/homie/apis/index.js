@@ -53,7 +53,7 @@ export const createPost = async (postData) => {
     return response.data;
   } catch (error) {
     console.error("Error fetch data: ", error);
-    return error.response;
+    return error.response.data;
   }
 };
 
@@ -101,7 +101,7 @@ export const getFilterPosts = async (filterObj) => {
     }
     return response.data;
   } catch (error) {
-    console.error("Error fetch data: ", error);
+    // console.error("Error fetch data: ", error);
     return error.response.data;
   }
 };
@@ -166,7 +166,7 @@ export const updateUser = async (formData, id) => {
     return response.data;
   } catch (error) {
     console.log(error);
-    return error.response;
+    return error.response.data;
   }
 };
 

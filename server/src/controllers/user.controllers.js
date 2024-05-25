@@ -1,7 +1,7 @@
 const { User } = require("../models/user.models");
 const { Post } = require("../models/post.models");
 const { errorCode, errorMessage } = require("../resources/index");
-const { uploadSingleImageToAWS } = require("../helpers/index");
+const { uploadSingleImageToAWS, hashPassword } = require("../helpers/index");
 
 const getUser = async (req, res) => {
   try {
@@ -72,8 +72,33 @@ const updateUser = async (req, res) => {
   }
 };
 
+const updatePassword = async (req, res) => {
+  try {
+    const phoneNumber = req.phoneNumber;
+    const newPlainPassword = req.body.password;
+    const newHashPassword = await hashPassword(newPlainPassword);
+    const user = await User.findOneAndUpdate(
+      { phoneNumber: phoneNumber },
+      { password: newHashPassword },
+      { new: true }
+    );
+    return res.status(201).json({
+      errorCode: errorCode.SUCCESS,
+      message: "Update password successfully",
+      data: { newPassword: newPlainPassword },
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      errorCode: errorCode.INTERNAL_SERVER_ERROR,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   getUser,
   getUserPosts,
   updateUser,
+  updatePassword,
 };

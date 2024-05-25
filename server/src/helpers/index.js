@@ -91,10 +91,38 @@ const sendingOtpSms = (phoneNumber, otpNumber) => {
     `Your OTP code for HOMiE is: ${otpNumber}. Hiệu lực 5 phút`,
     (result) => {
       if (result.ok) {
-        console.log("SUCCESS");
+        console.log("Receive OTP: SUCCESS");
+      } else {
+        console.log("Receive OTP: FAIL");
       }
     }
   );
+};
+
+const sendingPassword = (phoneNumber, password) => {
+  phoneNumber = formatPhoneNumber(phoneNumber);
+  textflow.sendSMS(
+    phoneNumber,
+    `Your new password for ${phoneNumber} is: ${password}.`,
+    (result) => {
+      if (result.ok) {
+        console.log("Get new password: SUCCESS");
+      } else {
+        console.log("Get new password: FAIL");
+      }
+    }
+  );
+};
+
+const generateRandomString = () => {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  const charactersLength = characters.length;
+  for (let i = 0; i < 6; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
 };
 
 module.exports = {
@@ -105,4 +133,6 @@ module.exports = {
   getBinarySizeInMB,
   uploadSingleImageToAWS,
   sendingOtpSms,
+  sendingPassword,
+  generateRandomString,
 };

@@ -8,6 +8,8 @@ const {
   hashPassword,
   comparePasswords,
   sendingOtpSms,
+  sendingPassword,
+  generateRandomString,
 } = require("../helpers/index");
 
 /**
@@ -166,9 +168,49 @@ const signout = async (req, res) => {
   });
 };
 
+const forgetPassword = async (req, res) => {
+  try {
+    let phoneNumber = req.body.phoneNumber;
+    let user = await User.findOne({
+      phoneNumber: phoneNumber,
+    });
+    // Check user is not registered
+    if (!user) {
+      return res.status(400).json({
+        errorCode: errorCode.NOT_REGISTED_USER,
+        message: errorMessage.NOT_REGISTED_USER,
+      });
+    }
+
+    let newPasswordPlain = generateRandomString();
+    // Hash password
+    const newPassword = await hashPassword(newPasswordPlain);
+    user = await User.findOneAndUpdate(
+      { phoneNumber: phoneNumber },
+      { password: newPassword },
+      {
+        new: true,
+      }
+    );
+    //Update thanh cong va gui SMS
+    sendingPassword(phoneNumber, newPasswordPlain);
+    return res.status(201).json({
+      errorCode: errorCode.SUCCESS,
+      message: "Update user successfully",
+      data: { newPassword: newPasswordPlain },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      errorCode: errorCode.INTERNAL_SERVER_ERROR,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   signup,
   signin,
   signout,
   verify,
+  forgetPassword,
 };

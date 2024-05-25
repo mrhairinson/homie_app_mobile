@@ -1,19 +1,21 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const { authenticateToken } = require('../middlewares/index');
+const { authenticateToken } = require("../middlewares/index");
 
 const {
-    signup,
-    signin,
-    signout,
-    verify
-} = require('../controllers/auth.controllers');
+  signup,
+  signin,
+  signout,
+  verify,
+  forgetPassword,
+} = require("../controllers/auth.controllers");
 
-router.post('/signup', signup);
-router.post('/signup/verify', verify);
-router.post('/signin', signin);
-router.post('/', signin);
-router.post('/signout', authenticateToken, signout);
+router.post("/signup", signup);
+router.post("/signup/verify", verify);
+router.post("/signin", signin);
+router.post("/", signin);
+router.put("/forgetPassword", forgetPassword);
+router.post("/signout", authenticateToken, signout);
 
 module.exports = router;

@@ -148,6 +148,19 @@ export const signin = async (phoneNumber, password) => {
   }
 };
 
+//Lấy lại mật khẩu mới
+export const forgotPassword = async (phoneNumber) => {
+  try {
+    const reqBody = {
+      phoneNumber: phoneNumber,
+    };
+    const response = await axios.put(`${baseUrl}/auth/forgetPassword`, reqBody);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
 //Sửa thông tin người dùng
 export const updateUser = async (formData, id) => {
   try {
@@ -161,6 +174,27 @@ export const updateUser = async (formData, id) => {
     const response = await axios.post(
       `${baseUrl}/user/update/${id}`,
       formData,
+      { headers: headers }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error.response.data;
+  }
+};
+
+//Đổi mật khẩu cho tài khoản
+export const changePassword = async (newPassword) => {
+  try {
+    const jwtToken = await getJwtToken();
+    const headers = {
+      authorization: `Bearer ${jwtToken}`,
+    };
+    const response = await axios.put(
+      `${baseUrl}/user/updatePassword`,
+      {
+        password: newPassword,
+      },
       { headers: headers }
     );
     return response.data;

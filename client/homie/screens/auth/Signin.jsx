@@ -10,7 +10,7 @@ import {
 import { useState } from "react";
 import React from "react";
 import { useAuth } from "../../contexts/AuthProvider";
-import { signin } from "../../apis";
+import { signin, forgotPassword } from "../../apis";
 import { ERROR_MESSAGE, SUCCESS_CODE } from "../../constants/error";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import io from "socket.io-client";
@@ -24,6 +24,19 @@ const Signin = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const handleGetBackPassword = async () => {
+    setLoading(true);
+    let response = await forgotPassword(phoneNumber);
+    setLoading(false);
+    if (response.errorCode === SUCCESS_CODE) {
+      Alert.alert(
+        "Lấy mk mới thành công",
+        `Mật khẩu mới của bạn là ${response.data.newPassword}`
+      );
+    } else {
+      Alert.alert("Thông báo", ERROR_MESSAGE[response.errorCode]);
+    }
+  };
   const handleLogin = async () => {
     setLoading(true);
     let response = await signin(phoneNumber, password);
@@ -84,6 +97,11 @@ const Signin = ({ navigation }) => {
           <Text style={styles.highlight}>Đăng kí</Text>
         </Pressable>
       </View>
+      {phoneNumber && (
+        <Pressable onPress={handleGetBackPassword}>
+          <Text style={styles.highlight}>Quên mật khẩu</Text>
+        </Pressable>
+      )}
     </View>
   );
 };
@@ -117,6 +135,7 @@ const styles = StyleSheet.create({
   changeSignUp: {
     flexDirection: "row",
     marginTop: 20,
+    marginBottom: 10,
     gap: 5,
   },
   highlight: {

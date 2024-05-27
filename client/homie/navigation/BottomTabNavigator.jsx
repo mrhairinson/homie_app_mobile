@@ -7,6 +7,7 @@ import Search from "../screens/Search";
 import Map from "../screens/Map";
 // import Chat from "../screens/Chat";
 import Profile from "../screens/profile/Profile";
+import ProfileNavigator from "./ProfileNavigator";
 import ChatNavigator from "./ChatNavigator";
 import AuthNavigator from "./AuthNavigator";
 import SearchNavigator from "./SearchNavigator";
@@ -60,7 +61,7 @@ const BottomTabNavigator = () => {
       />
       <Tab.Screen
         name="Profile"
-        component={isLoggedIn ? Profile : AuthNavigator}
+        component={isLoggedIn ? ProfileNavigator : AuthNavigator}
         unmountOnBlur={true}
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -82,7 +83,8 @@ const getTabbarVisibility = (route) => {
     routeName === "Signin" ||
     routeName === "Message" ||
     routeName === "FilterScreen" ||
-    routeName === "CreatePost"
+    routeName === "CreatePost" ||
+    routeName === "PasswordChange"
   ) {
     return "none";
   }

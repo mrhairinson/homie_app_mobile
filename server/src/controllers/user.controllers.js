@@ -1,7 +1,11 @@
 const { User } = require("../models/user.models");
 const { Post } = require("../models/post.models");
 const { errorCode, errorMessage } = require("../resources/index");
-const { uploadSingleImageToAWS, hashPassword } = require("../helpers/index");
+const {
+  uploadSingleImageToAWS,
+  hashPassword,
+  isValidPassword,
+} = require("../helpers/index");
 
 const getUser = async (req, res) => {
   try {
@@ -76,6 +80,13 @@ const updatePassword = async (req, res) => {
   try {
     const phoneNumber = req.phoneNumber;
     const newPlainPassword = req.body.password;
+    //Check valid password
+    if (!isValidPassword(newPlainPassword)) {
+      return res.status(400).json({
+        errorCode: errorCode.INVALID_PASSWORD,
+        message: errorMessage.INVALID_PASSWORD,
+      });
+    }
     const newHashPassword = await hashPassword(newPlainPassword);
     const user = await User.findOneAndUpdate(
       { phoneNumber: phoneNumber },

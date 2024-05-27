@@ -9,6 +9,7 @@ import {
   ScrollView,
   Alert,
   Modal,
+  Pressable,
 } from "react-native";
 import { useAuth } from "../../contexts/AuthProvider";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -25,8 +26,9 @@ import { updateUser } from "../../apis";
 import { SUCCESS_CODE, ERROR_MESSAGE } from "../../constants/error";
 import DatePicker from "react-native-modern-datepicker";
 import moment from "moment";
+import LoadingOverlay from "../../components/LoadingOverlay";
 
-const Profile = () => {
+const Profile = ({ navigation }) => {
   const { setIsLoggedIn, profile, setProfile, socket } = useAuth();
   const [isUpdate, setIsUpdate] = useState(false);
   const [name, setName] = useState(null);
@@ -34,6 +36,7 @@ const Profile = () => {
   const [image, setImage] = useState(null);
   const [file, setFile] = useState(null);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setName(profile.name);
@@ -56,6 +59,7 @@ const Profile = () => {
   };
 
   const handleUpdateProfile = async () => {
+    setIsLoading(true);
     const formData = new FormData();
     formData.append("name", name);
     formData.append("dob", dob);
@@ -66,6 +70,7 @@ const Profile = () => {
         type: file.mimeType,
       });
     let res = await updateUser(formData, profile._id);
+    setIsLoading(false);
     if (res.errorCode === SUCCESS_CODE) {
       setProfile(res.data);
       Alert.alert("Thông báo", "Cập nhật thông tin thành công");
@@ -129,6 +134,7 @@ const Profile = () => {
 
   return (
     <ScrollView style={styles.container}>
+      <LoadingOverlay visible={isLoading} />
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={handleUpdateBtn}>
@@ -252,6 +258,13 @@ const Profile = () => {
             <Text style={styles.name}>{profile.name}</Text>
             <Text style={styles.phoneNumber}>{profile.phoneNumber}</Text>
             <Text style={styles.dateOfBirth}>{profile.dob}</Text>
+            <Pressable
+              onPress={() => {
+                navigation.navigate("PasswordChange");
+              }}
+            >
+              <Text style={styles.highlight}>Đổi mật khẩu</Text>
+            </Pressable>
           </View>
         )}
       </View>
@@ -309,6 +322,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 20,
     textAlign: "center",
+  },
+  highlight: {
+    fontWeight: "bold",
+    textDecorationLine: "underline",
+    alignSelf: "center",
+    fontSize: 18,
   },
   updateImage: {
     flexDirection: "row",

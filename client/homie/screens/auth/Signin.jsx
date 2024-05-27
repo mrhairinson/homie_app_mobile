@@ -6,6 +6,7 @@ import {
   Text,
   StyleSheet,
   Alert,
+  TouchableOpacity,
 } from "react-native";
 import { useState } from "react";
 import React from "react";
@@ -16,6 +17,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import io from "socket.io-client";
 import { SERVER_URL } from "../../constants/resources";
 import LoadingOverlay from "../../components/LoadingOverlay";
+import { Feather } from "@expo/vector-icons";
 
 const Signin = ({ navigation }) => {
   const { setIsLoggedIn, setProfile, setSocket, setChats } = useAuth();
@@ -23,6 +25,7 @@ const Signin = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleGetBackPassword = async () => {
     setLoading(true);
@@ -80,12 +83,29 @@ const Signin = ({ navigation }) => {
         value={phoneNumber}
         keyboardType="phone-pad"
       />
-      <TextInput
-        style={styles.password}
-        placeholder="Nhập mật khẩu"
-        onChangeText={(text) => setPassword(text)}
-        value={password}
-      />
+      <View style={styles.passwordContainer}>
+        {/* <TextInput
+          style={styles.input}
+          placeholder="Nhập mật khẩu mới"
+          secureTextEntry={!showPassword}
+          value={password}
+          onChangeText={setPassword}
+        /> */}
+        <TextInput
+          style={styles.password}
+          placeholder="Nhập mật khẩu"
+          onChangeText={(text) => setPassword(text)}
+          secureTextEntry={!showPassword}
+          value={password}
+        />
+        <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+          <Feather
+            name={showPassword ? "eye-off" : "eye"}
+            size={24}
+            color="gray"
+          />
+        </TouchableOpacity>
+      </View>
       <Button
         title="Đăng nhập"
         onPress={handleLogin}
@@ -124,13 +144,17 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   password: {
+    flex: 1,
     height: 40,
-    width: "100%",
+  },
+  passwordContainer: {
+    flexDirection: "row",
+    alignItems: "center",
     borderColor: "gray",
     borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 10,
     marginBottom: 20,
+    paddingHorizontal: 10,
+    borderRadius: 5,
   },
   changeSignUp: {
     flexDirection: "row",

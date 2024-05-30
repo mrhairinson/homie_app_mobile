@@ -15,6 +15,7 @@ import { useLocation } from "../contexts/UserLocationProvider";
 import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
 import COLOR from "../constants/color";
 import { useAuth } from "../contexts/AuthProvider";
+import NoData from "../components/NoData";
 
 const Search = ({ navigation }) => {
   const [address, setAddress] = useState(null);
@@ -92,6 +93,9 @@ const Search = ({ navigation }) => {
           <FontAwesome name="filter" size={24} color={COLOR.PRIMARY} />
         </Pressable>
       </View>
+      {posts.length <= 0 && (
+        <NoData message="Không tìm thấy phòng nào, vuốt lên để tải lại!" />
+      )}
       <FlatList
         data={posts}
         renderItem={({ item }) => (

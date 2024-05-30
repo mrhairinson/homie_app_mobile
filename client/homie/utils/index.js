@@ -26,3 +26,22 @@ export const getJwtToken = async () => {
     console.error("Error fetching token: ", error);
   }
 };
+
+const convertYYYYMMDDtoDDMMYYYY = (dayString) => {
+  const [year, month, day] = dayString.split("-");
+  return `${day}/${month}/${year}`;
+};
+
+export const formatDate = (dateString) => {
+  const dayString = convertYYYYMMDDtoDDMMYYYY(dateString.slice(0, 10));
+  //Get the day today
+  const today = new Date();
+  const todayString = convertYYYYMMDDtoDDMMYYYY(
+    today.toISOString().slice(0, 10)
+  );
+  if (dayString === todayString) {
+    return "Hôm nay";
+  } else {
+    return dayString;
+  }
+};

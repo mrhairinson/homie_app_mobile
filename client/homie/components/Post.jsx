@@ -14,7 +14,7 @@ import React, { useState } from "react";
 import COLOR from "../constants/color";
 import { Ionicons, MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 import { useAuth } from "../contexts/AuthProvider";
-import { formatMoneyToVND } from "../utils";
+import { formatDate, formatMoneyToVND } from "../utils";
 import { deletePost, getAllPost } from "../apis";
 
 const Post = ({ post, navigateMap, navigateChat }) => {
@@ -77,6 +77,9 @@ const Post = ({ post, navigateMap, navigateChat }) => {
 
       {/* Name  */}
       <Text style={styles.postName}>{post.postName}</Text>
+      <Text style={styles.postDate}>
+        Ngày đăng: {formatDate(post.createdAt)}
+      </Text>
 
       <Pressable style={styles.location} onPress={() => navigateMap(post)}>
         <Ionicons name="location" size={18} color="black" />
@@ -179,10 +182,14 @@ const styles = StyleSheet.create({
     height: "auto",
   },
   postName: {
-    marginBottom: 10,
     color: COLOR.BLACK,
     fontSize: 22,
     fontWeight: "bold",
+  },
+  postDate: {
+    marginBottom: 10,
+    color: COLOR.BLACK,
+    fontSize: 12,
   },
   contact: {
     flexDirection: "row",

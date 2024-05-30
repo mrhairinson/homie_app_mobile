@@ -42,7 +42,7 @@ const Filter = ({ navigation }) => {
       //Gọi API
       let responses = await getPostsOfUser(profile["_id"]);
       if (responses.errorCode === SUCCESS_CODE) {
-        setPosts(responses.data);
+        setPosts(responses.data.reverse());
         navigation.navigate("SearchScreen");
       } else {
         Alert.alert("Thông báo", ERROR_MESSAGE[responses.errorCode]);
@@ -61,7 +61,7 @@ const Filter = ({ navigation }) => {
       //Gọi API
       let responses = await getFilterPosts(query);
       if (responses.errorCode === SUCCESS_CODE) {
-        setPosts(responses.data);
+        setPosts(responses.data.reverse());
         navigation.navigate("SearchScreen");
       } else {
         Alert.alert("Thông báo", ERROR_MESSAGE[responses.errorCode]);

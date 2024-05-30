@@ -54,6 +54,12 @@ const updateUser = async (req, res) => {
       name: req.body.name,
       dob: req.body.dob,
     };
+    if (updatedUser.name === "") {
+      return res.status(400).json({
+        errorCode: errorCode.MISSING_REQUIRED_FIELD,
+        message: errorMessage.MISSING_REQUIRED_FIELD,
+      });
+    }
     if (updateImageStatus == 1) {
       //Co update anh moi
       if (req.files) {

@@ -78,7 +78,7 @@ const CreatePost = ({ navigation }) => {
       navigation.navigate("SearchScreen");
     } else {
       console.log(res);
-      Alert.alert("Lỗi", ERROR_MESSAGE[res.errorCode]);
+      Alert.alert("Thông báo", ERROR_MESSAGE[res.errorCode]);
     }
   };
 
@@ -145,12 +145,12 @@ const CreatePost = ({ navigation }) => {
       <LoadingOverlay visible={loading} />
       <TextInput
         style={styles.input}
-        placeholder="Tên bài đăng"
+        placeholder="Tên bài đăng(*)"
         value={postName}
         onChangeText={(text) => setPostName(text)}
       />
       <DropDown
-        inputLabel="Thành phố"
+        inputLabel="Thành phố(*)"
         materialCommunityIcons="city-variant-outline"
         data={cities}
         mapLabel="name"
@@ -160,7 +160,7 @@ const CreatePost = ({ navigation }) => {
         initVal={city.name}
       />
       <DropDown
-        inputLabel="Quận/Huyện"
+        inputLabel="Quận/Huyện(*)"
         materialCommunityIcons="home-city-outline"
         data={districtList}
         mapLabel="name"
@@ -171,7 +171,7 @@ const CreatePost = ({ navigation }) => {
       />
       <TextInput
         style={styles.input}
-        placeholder="Vị trí cụ thể"
+        placeholder="Vị trí cụ thể(*)"
         value={location}
         onChangeText={(text) => setLocation(text)}
         onFocus={handleFocusLocation}
@@ -186,14 +186,14 @@ const CreatePost = ({ navigation }) => {
       <View style={styles.priceAreaContainer}>
         <TextInput
           style={[styles.input, styles.halfInput]}
-          placeholder="Diện tích phòng"
+          placeholder="Diện tích phòng(*)"
           value={roomArea}
           keyboardType="numeric"
           onChangeText={(text) => setRoomArea(text)}
         />
         <TextInput
           style={[styles.input, styles.halfInput]}
-          placeholder="Giá phòng"
+          placeholder="Giá phòng(*)"
           value={roomPrice}
           keyboardType="numeric"
           onChangeText={(text) => setRoomPrice(text)}
@@ -202,14 +202,14 @@ const CreatePost = ({ navigation }) => {
       <View style={styles.priceAreaContainer}>
         <TextInput
           style={[styles.input, styles.halfInput]}
-          placeholder="Giá điện"
+          placeholder="Giá điện(*)"
           value={roomPriceElectricity}
           keyboardType="numeric"
           onChangeText={(text) => setRoomPriceElectricity(text)}
         />
         <TextInput
           style={[styles.input, styles.halfInput]}
-          placeholder="Giá nước"
+          placeholder="Giá nước(*)"
           value={roomPriceWater}
           keyboardType="numeric"
           onChangeText={(text) => setRoomPriceWater(text)}
@@ -218,14 +218,14 @@ const CreatePost = ({ navigation }) => {
       <View style={styles.priceAreaContainer}>
         <TextInput
           style={[styles.input, styles.halfInput]}
-          placeholder="Giá mạng Internet"
+          placeholder="Giá mạng Internet(*)"
           value={roomPriceInternet}
           keyboardType="numeric"
           onChangeText={(text) => setRoomPriceInternet(text)}
         />
         <TextInput
           style={[styles.input, styles.halfInput]}
-          placeholder="Giá vệ sinh"
+          placeholder="Giá vệ sinh(*)"
           value={roomPriceCleaning}
           keyboardType="numeric"
           onChangeText={(text) => setRoomPriceCleaning(text)}
@@ -233,7 +233,7 @@ const CreatePost = ({ navigation }) => {
       </View>
       <TextInput
         style={[styles.input]}
-        placeholder="Mô tả chi tiết"
+        placeholder="Mô tả chi tiết(*)"
         value={roomDescription}
         onChangeText={(text) => setRoomDescription(text)}
       />

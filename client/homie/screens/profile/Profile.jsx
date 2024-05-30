@@ -71,7 +71,6 @@ const Profile = ({ navigation }) => {
         uri: file.uri,
         type: file.mimeType,
       });
-    console.log(formData);
     let res = await updateUser(formData, profile._id);
     setIsLoading(false);
     setIsUpdateImage(0);
@@ -81,7 +80,7 @@ const Profile = ({ navigation }) => {
       Alert.alert("Thông báo", "Cập nhật thông tin thành công");
       setIsUpdate(!isUpdate);
     } else {
-      Alert.alert("Lỗi", ERROR_MESSAGE[res.errorCode]);
+      Alert.alert("Thông báo", ERROR_MESSAGE[res.errorCode]);
     }
   };
 
@@ -208,7 +207,7 @@ const Profile = ({ navigation }) => {
             <View style={styles.updateInfo}>
               <TextInput
                 style={styles.input}
-                placeholder="Tên"
+                placeholder="Tên(*)"
                 onChangeText={(text) => setName(text)}
                 value={name}
               />

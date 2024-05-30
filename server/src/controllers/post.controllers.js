@@ -125,6 +125,16 @@ const createPost = async (req, res) => {
     const newPost = req.body;
     newPost.phoneNumber = phoneNumber;
     const images = req.files;
+    //Xư lí điền thiếu thông tin
+    //Duyệt qua các key trong obj newPost
+    for (const key in newPost) {
+      if (newPost[key] === "" || newPost[key] === "undefined") {
+        return res.status(400).json({
+          errorCode: errorCode.MISSING_REQUIRED_FIELD,
+          message: errorMessage.MISSING_REQUIRED_FIELD,
+        });
+      }
+    }
     //Xu ly images
     if (images.length !== 0) {
       let imageLs = new Array();

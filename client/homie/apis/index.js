@@ -52,7 +52,7 @@ export const createPost = async (postData) => {
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetch data: ", error);
+    // console.error("Error fetch data: ", error);
     return error.response.data;
   }
 };
@@ -71,7 +71,7 @@ export const deletePost = async (postId) => {
     console.log(response.data);
     return response.data;
   } catch (error) {
-    console.error("Error fetch data: ", error);
+    // console.error("Error fetch data: ", error);
     console.log(error);
     return error.response.data;
   }

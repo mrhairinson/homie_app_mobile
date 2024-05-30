@@ -12,6 +12,8 @@ const errorCode = {
   WRONG_PASSWORD: "e010",
   LARGE_IMAGE_SIZE: "e011",
   MIN_MAX_ERROR: "e012",
+  MAXIMUM_NUMBER_IMAGE_10: "e013",
+  MISSING_REQUIRED_FIELD: "e014",
 };
 
 const errorMessage = {
@@ -27,6 +29,9 @@ const errorMessage = {
   WRONG_PASSWORD: "Wrong pasword",
   LARGE_IMAGE_SIZE: "Image size is to large (> 1mb)",
   MIN_MAX_ERROR: "Min value is not higher than max value",
+  MAXIMUM_NUMBER_IMAGE_10:
+    "You can only have maximum number of images upload is 10",
+  MISSING_REQUIRED_FIELD: "Missing required field",
 };
 
 const ROOM_TYPE = {

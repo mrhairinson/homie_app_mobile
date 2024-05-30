@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const { authenticateToken } = require("../middlewares/index");
-const uploadFile = require("../middlewares/multerMiddleware");
+const uploadMiddleware = require("../middlewares/multerMiddleware");
 
 const {
   getAllPosts,
@@ -18,7 +18,7 @@ router.get("/", getAllPosts);
 router.get("/user/:userId", getUserPosts);
 router.get("/pagination", getPaginationPosts);
 router.get("/filter", getFilterPosts);
-router.post("/create", authenticateToken, uploadFile, createPost);
+router.post("/create", authenticateToken, uploadMiddleware, createPost);
 router.put("/update", authenticateToken, updatePost);
 router.delete("/delete/:id", authenticateToken, deletePost);
 

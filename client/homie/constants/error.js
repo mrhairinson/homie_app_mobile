@@ -11,6 +11,8 @@ export const ERROR_MESSAGE = {
   e010: "Sai mật khẩu",
   e011: "Dung lượng ảnh không quá 1MB",
   e012: "Min value không được lớn hơn Max value",
+  e013: "Bạn không được up nhiều hơn 10 bức ảnh",
+  e014: "Bạn cần điền hết các trường có dấu (*)",
 };
 
 export const SUCCESS_CODE = "e000";

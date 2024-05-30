@@ -37,6 +37,7 @@ const Profile = ({ navigation }) => {
   const [file, setFile] = useState(null);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isUpdateImage, setIsUpdateImage] = useState(0); //0 is not change, 1 is update, 2 is delete
 
   useEffect(() => {
     setName(profile.name);
@@ -63,14 +64,18 @@ const Profile = ({ navigation }) => {
     const formData = new FormData();
     formData.append("name", name);
     formData.append("dob", dob);
+    formData.append("updateImageStatus", isUpdateImage);
     file &&
       formData.append("image", {
         name: file.fileName,
         uri: file.uri,
         type: file.mimeType,
       });
+    console.log(formData);
     let res = await updateUser(formData, profile._id);
     setIsLoading(false);
+    setIsUpdateImage(0);
+    setFile(null);
     if (res.errorCode === SUCCESS_CODE) {
       setProfile(res.data);
       Alert.alert("Thông báo", "Cập nhật thông tin thành công");
@@ -89,6 +94,7 @@ const Profile = ({ navigation }) => {
         // base64: true,
       });
       if (!result.canceled) {
+        setIsUpdateImage(1);
         changeImage(result.assets[0]);
       }
     } catch (error) {
@@ -105,16 +111,22 @@ const Profile = ({ navigation }) => {
     });
     // console.log(result.assets[0]);
     if (!result.canceled) {
+      setIsUpdateImage(1);
       changeImage(result.assets[0]);
     }
   };
 
   const returnDefaultImage = () => {
+    setIsUpdateImage(2);
     changeImage(null);
   };
 
   const changeImage = (file) => {
-    setImage(file.uri);
+    if (file) {
+      setImage(file.uri);
+    } else {
+      setImage(null);
+    }
     setFile(file);
   };
 

@@ -49,16 +49,24 @@ const getUserPosts = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const userId = req.params.id;
-    let updatedUser = req.body;
-    if (req.files) {
-      let file = req.files[0];
-      file.originalname = `${crypto.randomUUID()}${file.originalname}`;
-      await uploadSingleImageToAWS(file);
-      updatedUser.image = `https://homiebucket2.s3.ap-southeast-2.amazonaws.com/uploads/${file.originalname}`;
+    let updateImageStatus = req.body.updateImageStatus;
+    let updatedUser = {
+      name: req.body.name,
+      dob: req.body.dob,
+    };
+    if (updateImageStatus == 1) {
+      //Co update anh moi
+      if (req.files) {
+        let file = req.files[0];
+        file.originalname = `${crypto.randomUUID()}${file.originalname}`;
+        await uploadSingleImageToAWS(file);
+        updatedUser.image = `https://homiebucket2.s3.ap-southeast-2.amazonaws.com/uploads/${file.originalname}`;
+      }
     }
-    // else {
-    //   updatedUser.image = null;
-    // }
+    if (updateImageStatus == 2) {
+      //Xoa anh di
+      updatedUser.image = null;
+    }
     const user = await User.findOneAndUpdate({ _id: userId }, updatedUser, {
       new: true,
     });

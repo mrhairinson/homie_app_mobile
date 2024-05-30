@@ -171,11 +171,9 @@ export const updateUser = async (formData, id) => {
       authorization: `Bearer ${jwtToken}`,
     };
     console.log(formData);
-    const response = await axios.post(
-      `${baseUrl}/user/update/${id}`,
-      formData,
-      { headers: headers }
-    );
+    const response = await axios.put(`${baseUrl}/user/update/${id}`, formData, {
+      headers: headers,
+    });
     return response.data;
   } catch (error) {
     console.log(error);

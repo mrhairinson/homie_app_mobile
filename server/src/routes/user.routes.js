@@ -12,7 +12,7 @@ const {
 
 router.get("/:id", getUser);
 router.get("/posts", authenticateToken, getUserPosts);
-router.post("/update/:id", authenticateToken, uploadFile, updateUser);
+router.put("/update/:id", authenticateToken, uploadFile, updateUser);
 router.put("/updatePassword", authenticateToken, updatePassword);
 
 module.exports = router;

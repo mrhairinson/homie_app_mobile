@@ -218,7 +218,8 @@ export const getUserLocation = async (longitude, latitude) => {
       ].text,
     };
   } catch (error) {
-    console.error(error);
+    console.log(error);
+    return error.response.data;
   }
 };
 
@@ -228,7 +229,8 @@ export const getChats = async (userId) => {
     const response = await axios.get(`${baseUrl}/chat/${userId}`);
     return response.data.data;
   } catch (error) {
-    console.error("Error fetch data: ", error);
+    console.log(error);
+    return error.response.data;
   }
 };
 
@@ -237,7 +239,8 @@ export const getUser = async (userId) => {
     const response = await axios.get(`${baseUrl}/user/${userId}`);
     return response.data.data;
   } catch (error) {
-    console.error("Error fetch data: ", error);
+    console.log(error);
+    return error.response.data;
   }
 };
 
@@ -246,7 +249,8 @@ export const getNewestMessage = async (chatId) => {
     const response = await axios.get(`${baseUrl}/message/newest/${chatId}`);
     return response.data.data[0];
   } catch (error) {
-    console.error("Error fetch data: ", error);
+    console.log(error);
+    return error.response.data;
   }
 };
 
@@ -255,7 +259,8 @@ export const getMessages = async (chatId) => {
     const response = await axios.get(`${baseUrl}/message/${chatId}`);
     return response.data.data;
   } catch (error) {
-    console.error("Error fetch data: ", error);
+    console.log(error);
+    return error.response.data;
   }
 };
 
@@ -269,7 +274,8 @@ export const createMessage = async ({ chatId, senderId, text }) => {
     const response = await axios.post(`${baseUrl}/message`, reqData);
     return response.data.data;
   } catch (error) {
-    console.error("Error fetch data: ", error);
+    console.log(error);
+    return error.response.data;
   }
 };
 
@@ -280,7 +286,8 @@ export const getChat = async (firstId, secondId) => {
     );
     return response.data.data;
   } catch (error) {
-    console.error("Error fetch data: ", error);
+    console.log(error);
+    return error.response.data;
   }
 };
 
@@ -293,6 +300,7 @@ export const createChat = async ({ firstId, secondId }) => {
     const response = await axios.post(`${baseUrl}/chat`, reqData);
     return response.data.data;
   } catch (error) {
-    console.error("Error fetch data: ", error);
+    console.log(error);
+    return error.response.data;
   }
 };

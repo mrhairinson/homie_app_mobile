@@ -86,7 +86,11 @@ const Search = ({ navigation }) => {
       <View style={styles.header}>
         <View>
           <Text style={styles.address}>
-            {userLocation ? `${address?.district}, ${address?.city}` : ","}
+            {userLocation
+              ? `Quận ${address?.district}, ${
+                  address?.city === "Hanoi" ? "Hà Nội" : address?.city
+                }`
+              : ","}
           </Text>
         </View>
         <Pressable style={styles.filter} onPress={filterPost}>
@@ -131,7 +135,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   address: {
-    fontSize: 21,
+    fontSize: 20,
     fontWeight: "bold",
   },
   button: {

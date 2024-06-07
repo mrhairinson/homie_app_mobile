@@ -16,6 +16,7 @@ import {
   createMessage,
   createChat,
   getChats,
+  getUser,
 } from "../../apis";
 
 const Message = ({ route, navigation }) => {
@@ -48,6 +49,10 @@ const Message = ({ route, navigation }) => {
     const fetchMessage = async () => {
       //tìm chat giữa 2 người
       const response = await getChat(profile._id, receiverUser?.receiverId);
+      //Tìm tên người nhận
+      const userReceiver = await getUser(receiverUser?.receiverId);
+      //Update tên người nhận tin nhắn
+      receiverUser.receiverName = userReceiver.name;
       //Nếu chưa có thì tạo chat luôn
       if (!response) {
         let newChatId = await createChat({

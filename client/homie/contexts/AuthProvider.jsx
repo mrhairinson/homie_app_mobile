@@ -12,15 +12,6 @@ export const AuthProvider = ({ children }) => {
   const [posts, setPosts] = useState([]);
   const [cities, setCities] = useState([]);
 
-  const fetchPost = async () => {
-    try {
-      const result = await getAllPost();
-      setPosts(result);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
   const fetchCities = async () => {
     try {
       const result = await getAllCities();
@@ -50,7 +41,6 @@ export const AuthProvider = ({ children }) => {
   }, [newMessage, profile]);
 
   useEffect(() => {
-    fetchPost();
     fetchCities();
   }, []);
 

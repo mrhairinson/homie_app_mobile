@@ -9,6 +9,7 @@ export default function App() {
   return (
     <AuthProvider>
       <LocationProvider>
+        <StatusBar style="dark-content" />
         <NavigationContainer>
           <BottomTabNavigator />
         </NavigationContainer>

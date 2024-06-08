@@ -20,8 +20,16 @@ const Search = ({ navigation }) => {
   const [address, setAddress] = useState(null);
   const { userLocation, setUserLocation } = useLocation();
   const { isLoggedIn, posts, setPosts } = useAuth();
-  const [isRefreshing, setIsRefreshing] = useState(false);
-
+  const [isRefreshing, setIsRefreshing] = useState(true);
+  const fetchPost = async () => {
+    try {
+      setIsRefreshing(true);
+      const result = await getAllPost();
+      setPosts(result);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
   useEffect(() => {
     (async () => {
       let longitude = userLocation?.longitude;
@@ -31,10 +39,14 @@ const Search = ({ navigation }) => {
         setAddress(result);
       } catch (error) {
         console.error(error);
+      } finally {
+        setIsRefreshing(false);
       }
     })();
   }, [userLocation]);
-
+  useEffect(() => {
+    fetchPost();
+  }, []);
   const navigateToMap = (location) => {
     // navigation.navigate("Map", { location });
     // Construct the URL with the start and end coordinates
@@ -95,7 +107,7 @@ const Search = ({ navigation }) => {
           <FontAwesome name="filter" size={24} color={COLOR.PRIMARY} />
         </Pressable>
       </View>
-      {posts.length <= 0 && (
+      {posts.length <= 0 && !isRefreshing && (
         <NoData message="Không tìm thấy phòng nào, vuốt lên để tải lại!" />
       )}
       <FlatList

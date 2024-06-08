@@ -31,15 +31,15 @@ app.get(baseUrl, (req, res) => {
 const server = createServer(app);
 const io = new Server(server);
 io.on("connection", (socket) => {
-  console.log("a user connected with id: ", socket.id);
+  // console.log("a user connected with id: ", socket.id);
   socket.on("join", (userId) => {
-    console.log("user joined with id: ", userId);
+    // console.log("user joined with id: ", userId);
     activeSockets[userId] = socket.id;
-    console.log("User", activeSockets);
+    // console.log("User", activeSockets);
   });
 
   socket.on("disconnect", () => {
-    console.log("user disconnected");
+    // console.log("user disconnected");
     for (let key in activeSockets) {
       if (
         activeSockets.hasOwnProperty(key) &&
@@ -51,7 +51,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("message", (data) => {
-    console.log("Message received:", data);
+    // console.log("Message received:", data);
     const { chatId, senderId, receiverId, message } = data;
     const receiverSocket = activeSockets[receiverId];
     const sendBackData = {

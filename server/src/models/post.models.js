@@ -77,10 +77,10 @@ const postSchema = new Schema(
       type: String,
       required: true,
     },
-    ownerName: {
-      type: String,
-      required: true,
-    },
+    // ownerName: {
+    //   type: String,
+    //   required: true,
+    // },
     expireAt: {
       type: Date,
       default: Date.now,

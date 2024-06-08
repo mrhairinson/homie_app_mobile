@@ -37,7 +37,7 @@ const Post = ({ post, navigateMap, navigateChat }) => {
       const response = await getAllPost();
       setPosts(response);
     } catch (error) {
-      console.log(error);
+      console.log("Unwanted error in add post: ", error);
     }
   };
   const showConfirmAlert = (postId) => {

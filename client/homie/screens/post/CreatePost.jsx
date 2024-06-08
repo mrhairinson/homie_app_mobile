@@ -58,7 +58,6 @@ const CreatePost = ({ navigation }) => {
     formData.append("hasHeater", hasHeater);
     formData.append("isClosed", isClosed);
     formData.append("ownerId", profile._id);
-    formData.append("ownerName", profile.name);
 
     imageList.map((image) => {
       formData.append("image", {
@@ -108,6 +107,7 @@ const CreatePost = ({ navigation }) => {
       }
     } catch (error) {
       console.log("Camera error:", error);
+      Alert.alert("Thông báo", "Chức năng đang tạm ngưng để phát triển");
     }
   };
 

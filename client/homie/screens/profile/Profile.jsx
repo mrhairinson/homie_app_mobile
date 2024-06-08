@@ -98,6 +98,7 @@ const Profile = ({ navigation }) => {
       }
     } catch (error) {
       console.log("Camera error:", error);
+      Alert.alert("Thông báo", "Chức năng đang tạm ngưng để phát triển");
     }
   };
 
@@ -131,7 +132,6 @@ const Profile = ({ navigation }) => {
 
   const handleConfirmDate = (date) => {
     setDob(moment(date, "YYYY-MM-DD").format("DD/MM/YYYY"));
-    console.log(moment(date, "YYYY-MM-DD").format("DD/MM/YYYY"));
     setDatePickerVisibility(false);
   };
 

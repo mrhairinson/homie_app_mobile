@@ -11,10 +11,6 @@ const createChat = async (req, res) => {
       members: { $all: [firstId, secondId] },
     });
     if (chat) {
-      // return res.status(200).json({
-      //     errorCode: errorCode.SUCCESS,
-      //     data: chat
-      // });
       console.log("This chat has already been created");
     }
     const newChat = new Chat({

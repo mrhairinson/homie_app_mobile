@@ -39,6 +39,9 @@ const Chat = ({ navigation }) => {
       {chats.length <= 0 && (
         <NoData message="Bạn chưa có cuộc hội thoại nào!" />
       )}
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Đoạn tin nhắn</Text>
+      </View>
       <FlatList
         data={chats}
         renderItem={renderItem}
@@ -54,6 +57,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+    gap: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: "#CCCCCC",
+  },
+  headerText: {
+    fontSize: 20,
+    fontWeight: "bold",
   },
   chatItem: {
     padding: 20,

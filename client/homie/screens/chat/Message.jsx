@@ -18,6 +18,7 @@ import {
   getChats,
   getUser,
 } from "../../apis";
+import { AntDesign } from "@expo/vector-icons";
 
 const Message = ({ route, navigation }) => {
   const { profile, socket, setChats } = useAuth();
@@ -37,7 +38,7 @@ const Message = ({ route, navigation }) => {
   });
 
   const scrollToBottom = () => {
-    flatListRef.current.scrollToEnd({ animated: true });
+    flatListRef.current?.scrollToEnd({ animated: true });
   };
 
   useEffect(() => {
@@ -52,7 +53,7 @@ const Message = ({ route, navigation }) => {
       //Tìm tên người nhận
       const userReceiver = await getUser(receiverUser?.receiverId);
       //Update tên người nhận tin nhắn
-      receiverUser.receiverName = userReceiver.name;
+      receiverUser.receiverName = userReceiver?.name;
       //Nếu chưa có thì tạo chat luôn
       if (!response) {
         let newChatId = await createChat({
@@ -118,6 +119,13 @@ const Message = ({ route, navigation }) => {
   );
   return (
     <View style={styles.container}>
+      {/* Header */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.navigate("Chat")}>
+          <AntDesign name="arrowleft" size={28} color="black" />
+        </TouchableOpacity>
+        <Text style={styles.headerText}>Tin nhắn</Text>
+      </View>
       <View style={styles.inputContainer}>
         <Text style={styles.receiver}>Tới, {receiverUser?.receiverName}</Text>
       </View>
@@ -151,6 +159,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+    gap: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: "#CCCCCC",
+  },
+  headerText: {
+    fontSize: 20,
+    fontWeight: "bold",
   },
   messageContainer: {
     padding: 10,

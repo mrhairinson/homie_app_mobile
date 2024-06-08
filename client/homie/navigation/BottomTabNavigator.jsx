@@ -76,7 +76,6 @@ const BottomTabNavigator = () => {
 
 const getTabbarVisibility = (route) => {
   const routeName = getFocusedRouteNameFromRoute(route) ?? "Search";
-  // console.log(routeName);
   if (
     routeName === "Signup" ||
     routeName === "Verification" ||

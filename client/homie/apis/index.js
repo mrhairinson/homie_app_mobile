@@ -60,7 +60,6 @@ export const createPost = async (postData) => {
 //Delete Post by  param
 export const deletePost = async (postId) => {
   try {
-    console.log("id: ", postId);
     const jwtToken = await getJwtToken();
     const headers = {
       authorization: `Bearer ${jwtToken}`,
@@ -68,7 +67,6 @@ export const deletePost = async (postId) => {
     const response = await axios.delete(`${baseUrl}/post/delete/${postId}`, {
       headers: headers,
     });
-    console.log(response.data);
     return response.data;
   } catch (error) {
     // console.error("Error fetch data: ", error);
@@ -170,7 +168,6 @@ export const updateUser = async (formData, id) => {
       "Content-Type": "multipart/form-data",
       authorization: `Bearer ${jwtToken}`,
     };
-    console.log(formData);
     const response = await axios.put(`${baseUrl}/user/update/${id}`, formData, {
       headers: headers,
     });

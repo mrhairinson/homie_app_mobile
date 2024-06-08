@@ -64,7 +64,6 @@ const Signin = ({ navigation }) => {
       const newSocket = io(SERVER_URL);
       setSocket(newSocket);
       newSocket.on("connect", () => {
-        console.log("Connected to server");
         // Tham gia server chat
         newSocket.emit("join", userId); // Replace 'USER_ID_HERE' with the actual user ID
       });

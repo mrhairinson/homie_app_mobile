@@ -11,12 +11,12 @@ const ChatNavigator = () => {
       <Stack.Screen
         name="Chat"
         component={Chat}
-        options={{ title: "Đoạn chat" }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Message"
         component={Message}
-        options={{ title: "Tin nhắn" }}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );

@@ -7,7 +7,6 @@ import {
   Linking,
   TouchableOpacity,
 } from "react-native";
-import { StatusBar } from "react-native";
 import React, { useEffect, useState } from "react";
 import Post from "../components/Post";
 import { getAllPost, getUserLocation } from "../apis";
@@ -82,7 +81,6 @@ const Search = ({ navigation }) => {
   };
   return (
     <View style={styles.container}>
-      <StatusBar />
       <View style={styles.header}>
         <View>
           <Text style={styles.address}>

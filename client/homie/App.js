@@ -1,16 +1,16 @@
-import { NavigationContainer } from '@react-navigation/native';
-import BottomTabNavigator from './navigation/BottomTabNavigator';
-import { AuthProvider } from './contexts/AuthProvider';
-import React from 'react';
-import { LocationProvider } from './contexts/UserLocationProvider';
-
+import { NavigationContainer } from "@react-navigation/native";
+import BottomTabNavigator from "./navigation/BottomTabNavigator";
+import { AuthProvider } from "./contexts/AuthProvider";
+import React from "react";
+import { LocationProvider } from "./contexts/UserLocationProvider";
+import { StatusBar } from "react-native";
 
 export default function App() {
   return (
     <AuthProvider>
       <LocationProvider>
         <NavigationContainer>
-          <BottomTabNavigator/>
+          <BottomTabNavigator />
         </NavigationContainer>
       </LocationProvider>
     </AuthProvider>

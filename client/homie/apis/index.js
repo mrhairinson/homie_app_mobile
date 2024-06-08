@@ -4,7 +4,7 @@ import { BASE_URL, MAP_BOX_PUBLIC_KEY } from "@env";
 
 import { getJwtToken } from "../utils";
 
-const baseUrl = BASE_URL;
+const baseUrl = "https://be-homie.onrender.com/api/v1";
 const accessToken = MAP_BOX_PUBLIC_KEY;
 
 // Lấy danh sách bài đăng

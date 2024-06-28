@@ -107,7 +107,7 @@ const Search = ({ navigation }) => {
           <FontAwesome name="filter" size={24} color={COLOR.PRIMARY} />
         </Pressable>
       </View>
-      {posts.length <= 0 && !isRefreshing && (
+      {posts?.length <= 0 && !isRefreshing && (
         <NoData message="Không tìm thấy phòng nào, vuốt lên để tải lại!" />
       )}
       <FlatList
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 10,
-    marginBottom: 10,
+    paddingBottom: 10,
   },
   address: {
     fontSize: 20,

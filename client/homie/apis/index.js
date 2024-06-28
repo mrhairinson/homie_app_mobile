@@ -4,6 +4,7 @@ import { BASE_URL, MAP_BOX_PUBLIC_KEY } from "@env";
 
 import { getJwtToken } from "../utils";
 
+// const baseUrl = "http://192.168.1.164:8080/api/v1";
 const baseUrl = "https://be-homie.onrender.com/api/v1";
 const accessToken = MAP_BOX_PUBLIC_KEY;
 

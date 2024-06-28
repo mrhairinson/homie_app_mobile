@@ -7,14 +7,16 @@ import { StatusBar } from "react-native";
 
 export default function App() {
   return (
-    <AuthProvider>
-      <LocationProvider>
-        <StatusBar style="dark-content" />
-        <NavigationContainer>
-          <BottomTabNavigator />
-        </NavigationContainer>
-      </LocationProvider>
-    </AuthProvider>
+    <>
+      <StatusBar backgroundColor="#4169e1" />
+      <AuthProvider>
+        <LocationProvider>
+          <NavigationContainer>
+            <BottomTabNavigator />
+          </NavigationContainer>
+        </LocationProvider>
+      </AuthProvider>
+    </>
   );
 }
 
